@@ -1,6 +1,10 @@
 {
   "name": "lindo",
+<<<<<<< HEAD
   "version": "2.7.1",
+=======
+  "version": "2.5.0",
+>>>>>>> 2.5.0
   "description": "Play Dofus Touch on Linux/OS X/Window",
   "author": "Prixe",
   "licence": "GPL-3.0",
