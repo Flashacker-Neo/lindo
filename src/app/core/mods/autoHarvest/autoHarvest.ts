@@ -1,10 +1,11 @@
 import { Logger } from "app/core/electron/logger.helper";
+import { all } from "async";
 import { Mod } from "../mod";
 
 export class AutoHarvest extends Mod {
     private readonly STATE_USE: number = 2;
 
-    private identifiedElements: any;
+    private statedElements: any[];
     private waitingInteractives: Array<InteractiveElement> = new Array();
     private usedInteractive: InteractiveElement;
     private skillsToUse: number[] = [];
@@ -19,7 +20,7 @@ export class AutoHarvest extends Mod {
     startMod(): void {
         this.params = this.settings.option.vip.general;
 
-        if(/*this.params.auto_harvest*/ false) {
+        if(/*this.params.auto_harvest*/ true) {
             Logger.info('- enable AutoHarvest');
 
             setTimeout(() => {
@@ -46,8 +47,6 @@ export class AutoHarvest extends Mod {
                 console.log('Force "isInHarvest" reinitialization -> ', this.isInHarvest);
             }
 
-            console.log('isLoading : ', this.isLoading);
-
             // Triggers the use of interactive
             if (this.waitingInteractives.length > 0 && !this.isLoading && this.checkAllCondition()) {
 
@@ -60,7 +59,7 @@ export class AutoHarvest extends Mod {
                     setTimeout(() => this.sortByEstimateDistance(), 200);
                 }
             }
-        }, 2500);
+        }, 500);
     }
 
     // TODO Move in autoHarvest gestionnaire
@@ -75,7 +74,6 @@ export class AutoHarvest extends Mod {
                 }
             });
         });
-        console.log('SkillsToUse : ', this.skillsToUse);
     }
 
     private useInteractiveElement(interactive: InteractiveElement) {
@@ -94,14 +92,19 @@ export class AutoHarvest extends Mod {
         if ((interactiveElement.enabledSkills != null && interactiveElement.enabledSkills.length > 0)
             && (!this.waitingInteractives.find(a => a.elementId == interactiveElement.elementId) || !(this.usedInteractive.elementId == interactiveElement.elementId))) {
 
-            const element = this.identifiedElements[interactiveElement.elementId];
+            const statedElement = this.statedElements.find(e => e.elementId == interactiveElement.elementId);
+            let pos;
+            if (statedElement != null) {
+                const scenePos = this.wGame.isoEngine.mapRenderer.getCellSceneCoordinate(statedElement.elementCellId);
+                pos = this.wGame.isoEngine.mapScene.convertSceneToCanvasCoordinate(scenePos.x, scenePos.y);
+            }
             
             const interactive: InteractiveElement = {elementId: interactiveElement.elementId,
                                                     elementTypeId: interactiveElement.elementTypeId,
                                                     skillId: interactiveElement.enabledSkills[0].skillId,
                                                     skillInstanceUid: interactiveElement.enabledSkills[0].skillInstanceUid,
-                                                    posX: element.x ? element.x : -1,
-                                                    posY: element.y ? element.y : -1}
+                                                    posX: pos != null ? pos.x : -1,
+                                                    posY: pos != null ? pos.y : -1}
 
             if (this.skillsToUse.includes(interactive.skillId)) {
                 this.waitingInteractives.push(interactive);
@@ -118,10 +121,10 @@ export class AutoHarvest extends Mod {
         }
     }
 
-    private loadInteractiveList(interactiveElements: any) {
+    private loadInteractiveList(interactiveElements: any, statedElements: any) {
         this.isLoading = true;
         setTimeout(() => {
-            this.identifiedElements = this.wGame.isoEngine.mapRenderer.identifiedElements;
+            this.statedElements = statedElements;
 
             this.clear();
             interactiveElements.forEach((interactiveElement) => {
@@ -134,7 +137,6 @@ export class AutoHarvest extends Mod {
     }
 
     private async sortByEstimateDistance() {
-console.log('SortWaitingInteractives...');
         const actorPosX: number = this.wGame.isoEngine.actorManager.userActor.x;
         const actorPosY: number = this.wGame.isoEngine.actorManager.userActor.y;
 
@@ -148,7 +150,8 @@ console.log('SortWaitingInteractives...');
     private checkAllCondition(): boolean {
         return !this.isInHarvest.status                     // If player is already in harvest
             && !this.weightLimitReached                     // If weight limit reached
-            && !this.wGame.gui.playerData.isFighting;       // If player is in fight
+            && !this.wGame.gui.playerData.isFighting        // If player is in fight
+            && !this.wGame.gui.windowsContainer._childrenList.find(child => child.id == "bidHouseShop").openState;
     }
 
 
@@ -184,7 +187,7 @@ console.log('SortWaitingInteractives...');
     }
 
     private onGameMapChange() {
-        this.on(this.wGame.dofus.connectionManager, 'MapComplementaryInformationsDataMessage', (e: any) => this.loadInteractiveList(e.interactiveElements));
+        this.on(this.wGame.dofus.connectionManager, 'MapComplementaryInformationsDataMessage', (e: any) => this.loadInteractiveList(e.interactiveElements, e.statedElements));
     }
 
 
