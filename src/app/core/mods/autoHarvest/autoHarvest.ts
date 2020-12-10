@@ -123,20 +123,18 @@ export class AutoHarvest extends Mod {
 
     private loadInteractiveList(interactiveElements: any, statedElements: any) {
         this.isLoading = true;
-        setTimeout(() => {
-            this.statedElements = statedElements;
+        this.statedElements = statedElements;
 
-            this.clear();
-            interactiveElements.forEach((interactiveElement) => {
-                this.addInteractiveToWaitingList(interactiveElement);
-            });
+        this.clear();
+        interactiveElements.forEach((interactiveElement) => {
+            this.addInteractiveToWaitingList(interactiveElement);
+        });
 
-            if (this.waitingInteractives.length > 1) setTimeout(() => this.sortByEstimateDistance(), 200);
-            else this.isLoading = false;
-        }, 500);
+        if (this.waitingInteractives.length > 1) setTimeout(() => this.sortByEstimateDistance(), 200);
+        else this.isLoading = false;
     }
 
-    private async sortByEstimateDistance() {
+    private sortByEstimateDistance() {
         const actorPosX: number = this.wGame.isoEngine.actorManager.userActor.x;
         const actorPosY: number = this.wGame.isoEngine.actorManager.userActor.y;
 
