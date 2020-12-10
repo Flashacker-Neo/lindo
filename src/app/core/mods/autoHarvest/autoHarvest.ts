@@ -151,6 +151,7 @@ export class AutoHarvest extends Mod {
         return !this.isInHarvest.status                     // If player is already in harvest
             && !this.weightLimitReached                     // If weight limit reached
             && !this.wGame.gui.playerData.isFighting        // If player is in fight
+            && !this.wGame.gui.windowsContainer._childrenList.find(child => child.id == "tradeStorage").openState
             && !this.wGame.gui.windowsContainer._childrenList.find(child => child.id == "bidHouseShop").openState;
     }
 
