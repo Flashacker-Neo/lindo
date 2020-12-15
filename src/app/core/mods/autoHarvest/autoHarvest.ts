@@ -192,12 +192,11 @@ export class AutoHarvest extends Mod {
 
     /* Utils function */
 
-    // FIXME Check if element is realy delete when is call by an other user interact with element 
     private deleteWaitingInteractive(elementId: number) {
         const elementToRemove: InteractiveElement = this.waitingInteractives.find(e => e.elementId == elementId);
         const index: number = this.waitingInteractives.indexOf(elementToRemove, 0);
         if (index > -1) {
-            this.waitingInteractives.slice(index, 1);
+            this.waitingInteractives.splice(index, 1);
             console.log('Delete waitingInteractive : ' + elementId);
         }
     }
