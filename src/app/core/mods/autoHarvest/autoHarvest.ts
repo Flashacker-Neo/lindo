@@ -1,5 +1,4 @@
 import { Logger } from "app/core/electron/logger.helper";
-import { all } from "async";
 import { Mod } from "../mod";
 
 export class AutoHarvest extends Mod {
@@ -11,8 +10,9 @@ export class AutoHarvest extends Mod {
     private skillsToUse: number[] = [];
 
     private checkInterval: any;
+    private resetHarvestInterval: any;
     private delayedUseInteractive: ReturnType<typeof setTimeout>;
-    private isInHarvest: {status: boolean, startTime: number, elemId: number} = {status: false, startTime: -1, elemId: 0};
+    private isInHarvest: {status: boolean, elemId: number} = {status: false, elemId: 0};
     private maxWeightInPercent: number = 95;
     private weightLimitReached: boolean = false;
     private isLoading: boolean = false;
@@ -39,15 +39,8 @@ export class AutoHarvest extends Mod {
     }
 
     private checkForAwaitingInteractives() {
+        // Triggers the use of interactive
         this.checkInterval = setInterval(() => {
-            // Reset harvest
-            if (this.isInHarvest.status && (new Date().getTime() - this.isInHarvest.startTime) >= 20000) {
-
-                this.deleteUseInteractiveAtEnd(this.isInHarvest.elemId);
-                console.log('Force "isInHarvest" reinitialization -> ', this.isInHarvest);
-            }
-
-            // Triggers the use of interactive
             if (this.waitingInteractives.length > 0 && !this.isLoading && this.checkAllCondition()) {
 
                 let interactive: InteractiveElement = this.waitingInteractives.shift();
@@ -60,6 +53,15 @@ export class AutoHarvest extends Mod {
                 }
             }
         }, 500);
+
+        // Reset harvest
+        this.resetHarvestInterval = setInterval(() => {
+            if (this.isInHarvest.status && (!this.wGame.isoEngine.actorManager.userActor.isLocked && !this.wGame.isoEngine.actorManager.userActor.moving)) {
+
+                this.deleteUseInteractiveAtEnd(this.isInHarvest.elemId);
+                console.log('Force "isInHarvest" reinitialization -> ', this.isInHarvest);
+            }
+        }, 1000);
     }
 
     // TODO Move in autoHarvest gestionnaire
@@ -76,17 +78,26 @@ export class AutoHarvest extends Mod {
         });
     }
 
+    /**
+     * Launches use of interactive of the interactives passed in parameters
+     * @param interactive The interactives to use
+     */
     private useInteractiveElement(interactive: InteractiveElement) {
         if (!this.isInHarvest.status) {
-            this.isInHarvest = {status: true, startTime: new Date().getTime(), elemId: interactive.elementId};
+            this.isInHarvest.elemId = interactive.elementId;
 
             this.delayedUseInteractive = setTimeout(() => {
                 console.log('UseInteractive -> elementId : ', interactive.elementId);
-                this.wGame.isoEngine.queueUseInteractive(interactive.elementId, interactive.skillInstanceUid);   
+                this.wGame.isoEngine.queueUseInteractive(interactive.elementId, interactive.skillInstanceUid);
+                this.isInHarvest.status = true; 
             }, this.getRandomTime(1,2));
         }
     }
 
+    /**
+     * Create and add interactive to waiting list
+     * @param interactiveElement Interactive to add
+     */
     private addInteractiveToWaitingList(interactiveElement: any) {
 
         if ((interactiveElement.enabledSkills != null && interactiveElement.enabledSkills.length > 0)
@@ -113,14 +124,23 @@ export class AutoHarvest extends Mod {
         }
     }
 
+    /**
+     * Remove the interactive when used
+     * @param elemId Element to remove
+     */
     private deleteUseInteractiveAtEnd(elemId: number) {
         if (this.usedInteractive != null && this.usedInteractive.elementId == elemId) {
             console.log('Delete usedInteractive : ', elemId);
             this.usedInteractive = null;
-            this.isInHarvest = {status: false, startTime: -1, elemId: 0};
+            this.isInHarvest = {status: false, elemId: 0};
         }
     }
 
+    /**
+     * Reset data and load new interactives
+     * @param interactiveElements Interactives received by websocket
+     * @param statedElements StatedElements received by websocket
+     */
     private loadInteractiveList(interactiveElements: any, statedElements: any) {
         this.isLoading = true;
         this.statedElements = statedElements;
@@ -146,11 +166,14 @@ export class AutoHarvest extends Mod {
     }
 
     private checkAllCondition(): boolean {
-        return !this.isInHarvest.status                     // If player is already in harvest
-            && !this.weightLimitReached                     // If weight limit reached
-            && !this.wGame.gui.playerData.isFighting        // If player is in fight
-            && !this.wGame.gui.windowsContainer._childrenList.find(child => child.id == "tradeStorage").openState
-            && !this.wGame.gui.windowsContainer._childrenList.find(child => child.id == "bidHouseShop").openState;
+        const wContainerList = this.wGame.gui.windowsContainer._childrenList;
+
+        return !(this.isInHarvest.status || this.isInHarvest.elemId != 0)                     // If player is already in harvest
+            && !this.weightLimitReached                                                       // If weight limit reached
+            && !this.wGame.gui.playerData.isFighting                                          // If player is in fight
+            && !wContainerList.find(child => child.id == "tradeStorage").openState            // If trade storage is open
+            && !wContainerList.find(child => child.id == "bidHouseShop").openState            // If bidHouse shop is open
+            && !this.wGame.isoEngine.actorManager.userActor.isLocked;                         // If player use something
     }
 
 
@@ -205,12 +228,13 @@ export class AutoHarvest extends Mod {
         this.waitingInteractives = [];
         this.usedInteractive = null;
         if (this.delayedUseInteractive) clearTimeout(this.delayedUseInteractive);
-        this.isInHarvest = {status: false, startTime: -1, elemId: 0};
+        this.isInHarvest = {status: false, elemId: 0};
     }
 
     public reset() {
         super.reset();
         clearInterval(this.checkInterval);
+        clearInterval(this.resetHarvestInterval);
     }
     
 }
