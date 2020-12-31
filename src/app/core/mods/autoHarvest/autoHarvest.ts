@@ -16,6 +16,7 @@ export class AutoHarvest extends Mod {
     private maxWeightInPercent: number = 95;
     private weightLimitReached: boolean = false;
     private isLoading: boolean = false;
+    private changeMap: boolean = false;
 
     startMod(): void {
         this.params = this.settings.option.vip.general;
@@ -33,6 +34,7 @@ export class AutoHarvest extends Mod {
             this.onInteractiveUseEndedMessage();
             this.onInventoryWeightMessage();
             this.onStatedElementUpdatedMessage()
+            this.onChangeMapMessage();
 
             this.checkForAwaitingInteractives();
         }
@@ -41,7 +43,7 @@ export class AutoHarvest extends Mod {
     private checkForAwaitingInteractives() {
         // Triggers the use of interactive
         this.checkInterval = setInterval(() => {
-            if (this.waitingInteractives.length > 0 && !this.isLoading && this.checkAllCondition()) {
+            if (this.waitingInteractives.length > 0 && !this.isLoading && !this.changeMap && this.checkAllCondition()) {
 
                 let interactive: InteractiveElement = this.waitingInteractives.shift();
                 this.useInteractiveElement(interactive);
@@ -193,7 +195,7 @@ export class AutoHarvest extends Mod {
             try {
                 const weightPercent = Math.round(e.weight / e.weightMax * 100);
                 this.weightLimitReached = weightPercent >= this.maxWeightInPercent;
-                if(this.weightLimitReached) console.log('Pods supérieur à ' + this.maxWeightInPercent + '%');
+                if(this.weightLimitReached) this.wGame.gui.chat.logMsg('Pods supérieur à ' + this.maxWeightInPercent + '%');
             } catch (error) {
                 Logger.info(error);
             }
@@ -208,8 +210,17 @@ export class AutoHarvest extends Mod {
         this.on(this.wGame.dofus.connectionManager, 'InteractiveUseEndedMessage', (e: any) => this.deleteUseInteractiveAtEnd(e.elemId));
     }
 
+    private onChangeMapMessage() {
+        this.on(this.wGame.dofus.connectionManager, 'send', (e: any) => { if (e.data.data == 'ChangeMapMessage') this.changeMap = true; });
+    }
+
     private onGameMapChange() {
-        this.on(this.wGame.dofus.connectionManager, 'MapComplementaryInformationsDataMessage', (e: any) => this.loadInteractiveList(e.interactiveElements, e.statedElements));
+        this.on(this.wGame.dofus.connectionManager, 'MapComplementaryInformationsDataMessage', (e: any) => {
+            this.loadInteractiveList(e.interactiveElements, e.statedElements);
+            setTimeout(() => {
+                this.changeMap = false;
+            }, 500);
+        });
     }
 
 
