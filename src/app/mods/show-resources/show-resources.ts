@@ -167,11 +167,7 @@ export class ShowResources extends Mod {
             let item = `<div class="resource-item"> <div>`;
 
             resource.getIcon().forEach((icon) => {
-<<<<<<< HEAD:src/app/mods/show-resources/show-resources.ts
                 item += `<img src="${icon}" alt=""/>`;
-=======
-                item += `<img src="${icon}"/>`;
->>>>>>> [MODS][ShowResources] Add all interatives:src/app/core/mods/showResources/showResources.ts
             });
 
             item += `</div>
