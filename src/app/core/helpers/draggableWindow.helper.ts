@@ -9,6 +9,9 @@ export class DraggableWindowHelper {
     private isCustomElmnt: boolean = false;
 
     private window: HTMLDivElement;
+    private windowTitle;
+    private windowBody;
+    private closeButton;
 
     constructor(wGame: any|Window) {
         this.wGame = wGame;
@@ -48,10 +51,11 @@ export class DraggableWindowHelper {
         this.window.insertAdjacentHTML("afterbegin", content);
         this.wGame.document.getElementsByClassName("windowsContainer")[0].appendChild(this.window);
 
-        const closeButton = this.window.children[1].children[0].children[1];
-        closeButton.addEventListener('click', () => {
-            this.window.style.visibility = "hidden";
-        });
+        this.closeButton = this.window.children[1].children[0].children[1];
+        this.windowTitle = this.window.children[1].children[0].children[0];
+        this.windowBody = this.window.children[1].children[1].children[0];
+
+        this.closeButton.addEventListener('click', () => this.window.style.visibility = "hidden");
 
         return this;
     }
@@ -61,12 +65,27 @@ export class DraggableWindowHelper {
      * @param content Content to add
      */
     public addContent(content: HTMLElement): DraggableWindowHelper {
-        if (!this.isCustomElmnt) {
-            const windowBody = this.window.children[1].children[1].children[0];
-            windowBody.appendChild(content);
-        } else {
-            console.error('Can\'t add content on custom window');
-        }
+        if (!this.isCustomElmnt) this.windowBody.appendChild(content);
+        else console.error('Can\'t add content on custom window');
+        
+        return this;
+    }
+
+    /**
+     * Add a button to the right of the header
+     * @param button The div button to add
+     */
+    public addButtonToRightToHeader(button: HTMLDivElement): DraggableWindowHelper {
+        this.windowTitle.insertAdjacentElement('afterend', button);
+        return this;
+    }
+
+    /**
+     * Add a button to the left of the header
+     * @param button The div button to add
+     */
+    public addButtonToLeftToHeader(button: HTMLDivElement): DraggableWindowHelper {
+        this.windowTitle.insertAdjacentElement('beforebegin', button);
         return this;
     }
 
@@ -98,6 +117,7 @@ export class DraggableWindowHelper {
             if (this.window.offsetLeft < 0) this.window.style.left = '0px';
             else if (this.window.offsetLeft + this.window.offsetWidth > container.offsetWidth) this.window.style.left = container.offsetWidth - this.window.offsetWidth + 'px';
             else this.window.style.left = (this.window.offsetLeft - this.newDragPosX) + "px";
+            
             // check if window is in the container and set new Y pos
             if (this.window.offsetTop < 0) this.window.style.top = '0px';
             else if (this.window.offsetTop + this.window.offsetHeight > container.offsetHeight) this.window.style.top = container.offsetHeight - this.window.offsetHeight + 'px';
@@ -113,8 +133,7 @@ export class DraggableWindowHelper {
             if (draggableAnchor) draggableAnchor.addEventListener('touchstart', dragMouseDown);
             else console.error('You must specify an HTMLElement for make draggable a custom window');
         } else {
-            const windowTitle = this.window.children[1].children[0].children[0];
-            windowTitle.addEventListener('touchstart', dragMouseDown);
+            this.windowTitle.addEventListener('touchstart', dragMouseDown);
         }
 
         return this;
