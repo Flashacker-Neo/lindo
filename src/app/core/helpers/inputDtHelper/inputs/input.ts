@@ -11,18 +11,6 @@ export class Input {
 
     private constructor(wGame: any|Window) {
         this.wGame = wGame;
-
-        let inputDtCss = document.createElement('style');
-        inputDtCss.id = 'inputDtCss';
-        inputDtCss.innerHTML = `
-            input::-webkit-outer-spin-button,
-            input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-            }
-        `;
-
-        this.wGame.document.querySelector('head').appendChild(inputDtCss);
     }
 
     /**

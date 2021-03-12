@@ -14,6 +14,35 @@ export class InputDtHelper {
 
     private constructor(wGame: any|Window) {
         this.wGame = wGame;
+
+        const inputCss = document.createElement('style');
+        inputCss.id = 'inputDtCss';
+        inputCss.innerHTML = `
+            // custom Scroll
+            .customScrollerContent {
+                overflow-y: scroll;
+                margin-right: 0 !important;
+            }
+            .customScrollerContent::-webkit-scrollbar {
+                width: 2px;
+            }
+            .customScrollerContent::-webkit-scrollbar-track {
+                background-color: black;
+            }
+            .customScrollerContent::-webkit-scrollbar-thumb,
+            .customScrollerContent::-webkit-scrollbar-thumb:hover {
+                background: #a3d52e;
+                border-radius: 2px;
+            }
+            // Custom input
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+            }
+        `;
+
+        this.wGame.document.querySelector('head').appendChild(inputCss);
     }
 
     public getButtonHelper(): Button {

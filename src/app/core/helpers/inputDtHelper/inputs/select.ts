@@ -11,28 +11,6 @@ export class Select {
     private constructor(wGame: any|Window) {
         this.wGame = wGame;
         this.dropDown = this.wGame.document.getElementsByClassName('dropDown')[0];
-
-        const selectCss = document.createElement('style');
-        selectCss.id = 'inputDtCss';
-        selectCss.innerHTML = `
-            .customScrollerContent {
-                overflow-y: scroll;
-                margin-right: 0 !important;
-            }
-            .customScrollerContent::-webkit-scrollbar {
-                width: 2px;
-            }
-            .customScrollerContent::-webkit-scrollbar-track {
-                background-color: black;
-            }
-            .customScrollerContent::-webkit-scrollbar-thumb,
-            .customScrollerContent::-webkit-scrollbar-thumb:hover {
-                background: #a3d52e;
-                border-radius: 2px;
-            }
-        `;
-
-        this.wGame.document.querySelector('head').appendChild(selectCss);
     }
 
     /**
