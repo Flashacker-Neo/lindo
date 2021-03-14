@@ -15,15 +15,35 @@ export class Button {
      * Return a HTMLDivElement with dofus touch button skin
      * @param id The div id
      * @param text The text inside
-     * @param type The type for style
+     * @param color The color of button
      * @param customClass A custom className for add your css
      */
-    public createButton(id: string, text: string, type: ButtonType, customClassName?: string): HTMLDivElement {
+    public createTextButton(id: string, text: string, color: ButtonColor, customClassName?: string): HTMLDivElement {
         const button: HTMLDivElement = this.wGame.document.createElement('div');
         button.id = id;
-        button.className = 'Button scaleOnPress ' + type;
+        button.className = 'Button scaleOnPress ' + color;
         if (customClassName) button.classList.add(customClassName);
         button.insertAdjacentText('afterbegin', text);
+
+        return button;
+    }
+
+    /**
+     * Return a HTMLDivElement with dofus touch button icon skin
+     * @param id The div id
+     * @param icon The icon class name
+     * @param customClass A custom className for add your css
+     */
+     public createIconButton(id: string, icon: string, customClassName?: string): HTMLDivElement {
+        const button: HTMLDivElement = this.wGame.document.createElement('div');
+        button.id = id;
+        button.className = `Button scaleOnPress ${icon}`;
+        if (customClassName) button.classList.add(customClassName);
+
+        const btnIcon: HTMLDivElement = this.wGame.document.createElement('div');
+        btnIcon.className = 'btnIcon';
+
+        button.insertAdjacentElement('afterbegin', btnIcon);
 
         return button;
     }
@@ -67,7 +87,7 @@ export class Button {
     }
 }
 
-export enum ButtonType {
+export enum ButtonColor {
     'PRIMARY' = 'button',
     'SECONDARY' = 'secondaryButton',
     'SPECIAL' = 'specialButton'
