@@ -117,12 +117,15 @@ export class Select {
             entryContainer.style.top = '';
 
             let scrollerMaxHeight = clientHeight - selectBounding.bottom - 17;
-            // Select if display on top or on bottom off select
-            if (scrollerMaxHeight < clientHeight*0.4) {
+            let entryContainerHeight = entryContainer.getBoundingClientRect().height;
+
+            if (entryContainerHeight < scrollerMaxHeight || scrollerMaxHeight > clientHeight*0.4) {
+                // Display entry container on bottom of select
+                entryContainer.style.top = selectBounding.bottom + 1 + 'px';
+            } else {
+                // Display entry container on top of select
                 entryContainer.style.bottom = clientHeight - selectBounding.top + 1 + 'px';
                 scrollerMaxHeight = clientHeight - (clientHeight - selectBounding.top + 17);
-            } else {
-                entryContainer.style.top = selectBounding.bottom + 1 + 'px';
             }
             // Define max height of scroller
             scrollerContent.style.maxHeight = scrollerMaxHeight + 'px';
