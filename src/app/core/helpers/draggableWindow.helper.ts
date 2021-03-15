@@ -28,7 +28,8 @@ export class DraggableWindowHelper {
     }
 
     /**
-     * Create a basic window with dofus style but without define size
+     * Create a basic window with dofus style but without define size.
+     * Auto insert in DOM (windowsContainer)
      * @param title Title will show to user
      * @param id The id of that window
      */
