@@ -76,7 +76,7 @@ export class Input {
         container.className = 'chat';
         if (customClassName) container.classList.add(customClassName);
         container.style.display = 'flex';
-        container.style.width = 'calc(100% - 20px)';
+        container.style.position = 'initial';
         container.style.height = 'auto'; // fix height from dt class
 
         // create input field
