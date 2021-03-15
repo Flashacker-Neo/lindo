@@ -1,6 +1,7 @@
 import { Button } from "./inputs/button";
 import { Checkbox } from "./inputs/checkbox";
 import { Input } from "./inputs/input";
+import { ProgressBarHelper } from "./inputs/progressBar";
 import { Select } from "./inputs/select";
 
 export class InputDtHelper {
@@ -59,5 +60,9 @@ export class InputDtHelper {
 
     public getSelectHelper(): Select {
         return Select.getInstance(this.wGame);
+    }
+
+    public getProgressBarHelper(): ProgressBarHelper {
+        return ProgressBarHelper.getInstance(this.wGame);
     }
 }
