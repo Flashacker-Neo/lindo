@@ -77,6 +77,7 @@ export class Input {
         if (customClassName) container.classList.add(customClassName);
         container.style.display = 'flex';
         container.style.position = 'initial';
+        container.style.width = 'width: calc(100% - 5px)';
         container.style.height = 'auto'; // fix height from dt class
 
         // create input field

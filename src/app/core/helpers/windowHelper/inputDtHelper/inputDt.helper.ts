@@ -19,7 +19,6 @@ export class InputDtHelper {
         const inputCss = document.createElement('style');
         inputCss.id = 'inputDtCss';
         inputCss.innerHTML = `
-            // custom Scroll
             .customScrollerContent {
                 overflow-y: scroll;
                 margin-right: 0 !important;
@@ -46,23 +45,43 @@ export class InputDtHelper {
         this.wGame.document.querySelector('head').appendChild(inputCss);
     }
 
-    public getButtonHelper(): Button {
+    /**
+     * Get an helper to create button with dofus touch style
+     * @returns Button
+     */
+    public Button(): Button {
         return Button.getInstance(this.wGame);
     }
 
-    public getCheckboxHelper(): Checkbox {
+    /**
+     * Get an helper to create checkbox with dofus touch style
+     * @returns Checkbox
+     */
+    public Checkbox(): Checkbox {
         return Checkbox.getInstance(this.wGame);
     }
 
-    public getInputHelper(): Input {
+    /**
+     * Get an helper to create input with dofus touch style
+     * @returns Input
+     */
+    public Input(): Input {
         return Input.getInstance(this.wGame);
     }
 
-    public getSelectHelper(): Select {
+    /**
+     * Get an helper to create select with dofus touch style
+     * @returns Select
+     */
+    public Select(): Select {
         return Select.getInstance(this.wGame);
     }
 
-    public getProgressBarHelper(): ProgressBarHelper {
+    /**
+     * Get an helper to create progress bar with dofus touch style
+     * @returns ProgressBarHelper
+     */
+    public ProgressBar(): ProgressBarHelper {
         return ProgressBarHelper.getInstance(this.wGame);
     }
 }
