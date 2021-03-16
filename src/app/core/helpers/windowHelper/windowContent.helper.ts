@@ -17,7 +17,7 @@ export class WindowContentHelper {
                 overflow-y: scroll;
                 overflow-x: hidden;
                 width: 100%;
-                padding-right: 0 7px;
+                padding: 0 7px;
                 margin-right: 0 !important;
             }
             .scrollableContent::-webkit-scrollbar {
@@ -35,7 +35,7 @@ export class WindowContentHelper {
             .customContent {
                 box-sizing: border-box;
                 position: relative;
-                padding: 10px;
+                padding: 10px 7px;
                 max-height: 100%;
                 display: flex;
                 width: 100%;
