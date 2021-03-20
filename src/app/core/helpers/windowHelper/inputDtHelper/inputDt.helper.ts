@@ -6,14 +6,8 @@ import { Select } from "./inputs/select";
 
 export class InputDtHelper {
     private wGame: any|Window;
-    private static instance: InputDtHelper;
 
-    public static getInstance(wGame: any|Window): InputDtHelper {
-        if (!this.instance) this.instance = new InputDtHelper(wGame);
-        return this.instance;
-    }
-
-    private constructor(wGame: any|Window) {
+    constructor(wGame: any|Window) {
         this.wGame = wGame;
 
         const inputCss = document.createElement('style');

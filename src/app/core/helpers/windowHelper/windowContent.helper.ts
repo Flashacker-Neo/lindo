@@ -1,13 +1,7 @@
 export class WindowContentHelper {
     private wGame: any|Window;
-    private static instance: WindowContentHelper;
 
-    public static getInstance(wGame: any|Window): WindowContentHelper {
-        if (!this.instance) this.instance = new WindowContentHelper(wGame);
-        return this.instance;
-    }
-
-    private constructor(wGame: any|Window) {
+    constructor(wGame: any|Window) {
         this.wGame = wGame;
 
         const windowContentCss = document.createElement('style');

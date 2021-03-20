@@ -199,4 +199,8 @@ export class DraggableWindowHelper {
     public hide() {
         this.window.style.visibility = 'hidden';
     }
+
+    public isVisible(): boolean {
+        return this.window.style.visibility === 'visible';
+    }
 }

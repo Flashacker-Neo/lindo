@@ -3,17 +3,14 @@ import { InputDtHelper } from "./inputDtHelper/inputDt.helper";
 import { WindowContentHelper } from "./windowContent.helper";
 
 export class CustomWindowHelper {
-    private static instance: CustomWindowHelper;
-
     private wGame: any | Window;
+    private windowsContent: WindowContentHelper;
+    private inputsHelper: InputDtHelper;
 
-    public static getInstance(wGame: any|Window) {
-        if (!this.instance) this.instance = new CustomWindowHelper(wGame);
-        return this.instance;
-    }
-
-    private constructor(wGame) {
+    constructor(wGame) {
         this.wGame = wGame;
+        this.windowsContent = new WindowContentHelper(this.wGame);
+        this.inputsHelper = new InputDtHelper(this.wGame);
     }
 
     // Windows Helper
@@ -31,7 +28,7 @@ export class CustomWindowHelper {
      * @returns WindowContentHelper
      */
     public WindowContent(): WindowContentHelper {
-        return WindowContentHelper.getInstance(this.wGame);
+        return this.windowsContent;
     }
 
     // Input Helper
@@ -41,6 +38,6 @@ export class CustomWindowHelper {
      * @returns InputDtHelper
      */
     public getInputsHelper(): InputDtHelper {
-        return InputDtHelper.getInstance(this.wGame);
+        return this.inputsHelper;
     }
 }
