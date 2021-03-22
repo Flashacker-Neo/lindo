@@ -38,6 +38,6 @@ export class CustomWindowHelper {
      * @returns InputDtHelper
      */
     public getInputsHelper(): InputDtHelper {
-        return this.inputsHelper;
+        return new InputDtHelper(this.wGame);
     }
 }

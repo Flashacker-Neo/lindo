@@ -1,13 +1,7 @@
 export class ProgressBarHelper {
     private wGame: any|Window;
-    private static instance: ProgressBarHelper;
 
-    public static getInstance(wGame: any|Window): ProgressBarHelper {
-        if (!this.instance) this.instance = new ProgressBarHelper(wGame);
-        return this.instance;
-    }
-
-    private constructor(wGame: any|Window) {
+    constructor(wGame: any|Window) {
         this.wGame = wGame;
     }
 

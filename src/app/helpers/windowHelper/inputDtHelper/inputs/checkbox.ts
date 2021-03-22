@@ -1,13 +1,7 @@
 export class Checkbox {
     private wGame: any|Window;
-    private static instance: Checkbox;
 
-    public static getInstance(wGame: any|Window): Checkbox {
-        if (!this.instance) this.instance = new Checkbox(wGame);
-        return this.instance;
-    }
-
-    private constructor(wGame: any|Window) {
+    constructor(wGame: any|Window) {
         this.wGame = wGame;
     }
 

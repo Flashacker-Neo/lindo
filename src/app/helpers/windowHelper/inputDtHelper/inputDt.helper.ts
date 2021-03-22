@@ -7,6 +7,12 @@ import { Select } from "./inputs/select";
 export class InputDtHelper {
     private wGame: any|Window;
 
+    private button: Button;
+    private checkBox: Checkbox;
+    private input: Input;
+    private select: Select;
+    private progressBar: ProgressBarHelper;
+
     constructor(wGame: any|Window) {
         this.wGame = wGame;
 
@@ -37,6 +43,11 @@ export class InputDtHelper {
         `;
 
         this.wGame.document.querySelector('head').appendChild(inputCss);
+        this.button = new Button(this.wGame);
+        this.checkBox = new Checkbox(this.wGame);
+        this.input = new Input(this.wGame, this);
+        this.select = new Select(this.wGame);
+        this.progressBar = new ProgressBarHelper(this.wGame);
     }
 
     /**
@@ -44,7 +55,7 @@ export class InputDtHelper {
      * @returns Button
      */
     public Button(): Button {
-        return Button.getInstance(this.wGame);
+        return this.button;
     }
 
     /**
@@ -52,7 +63,7 @@ export class InputDtHelper {
      * @returns Checkbox
      */
     public Checkbox(): Checkbox {
-        return Checkbox.getInstance(this.wGame);
+        return this.checkBox;
     }
 
     /**
@@ -60,7 +71,7 @@ export class InputDtHelper {
      * @returns Input
      */
     public Input(): Input {
-        return Input.getInstance(this.wGame);
+        return this.input;
     }
 
     /**
@@ -68,7 +79,7 @@ export class InputDtHelper {
      * @returns Select
      */
     public Select(): Select {
-        return Select.getInstance(this.wGame);
+        return this.select;
     }
 
     /**
@@ -76,6 +87,6 @@ export class InputDtHelper {
      * @returns ProgressBarHelper
      */
     public ProgressBar(): ProgressBarHelper {
-        return ProgressBarHelper.getInstance(this.wGame);
+        return this.progressBar;
     }
 }

@@ -1,13 +1,7 @@
 export class Button {
     private wGame: any|Window;
-    private static instance: Button;
 
-    public static getInstance(wGame: any|Window): Button {
-        if (!this.instance) this.instance = new Button(wGame);
-        return this.instance;
-    }
-
-    private constructor(wGame: any|Window) {
+    constructor(wGame: any|Window) {
         this.wGame = wGame;
     }
 

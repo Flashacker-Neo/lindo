@@ -3,15 +3,11 @@ import { Button, ButtonColor } from "./button";
 
 export class Input {
     private wGame: any|Window;
-    private static instance: Input;
+    private inputDtHelper: InputDtHelper;
 
-    public static getInstance(wGame: any|Window): Input {
-        if (!this.instance) this.instance = new Input(wGame);
-        return this.instance;
-    }
-
-    private constructor(wGame: any|Window) {
+    constructor(wGame: any|Window, inputDtHelper: InputDtHelper) {
         this.wGame = wGame;
+        this.inputDtHelper = inputDtHelper;
     }
 
     /**
@@ -50,7 +46,7 @@ export class Input {
         btnIcon.className = 'btnIcon';
 
         // create search button
-        const searchBtn: HTMLDivElement = Button.getInstance(this.wGame).createIconButton(id + '-searchBtn', 'searchBtn');
+        const searchBtn: HTMLDivElement = this.inputDtHelper.Button().createIconButton(id + '-searchBtn', 'searchBtn');
 
         // construct final element
         cancelBtn.insertAdjacentElement('afterbegin', btnIcon);
@@ -177,7 +173,7 @@ export class Input {
         btnIcon.addEventListener('click', onClickCancel);
 
         // return callBack when search button press
-        if (searchBtn) Button.getInstance(this.wGame).addButtonEvent(searchBtn, onClickSearch);
+        if (searchBtn) this.inputDtHelper.Button().addButtonEvent(searchBtn, onClickSearch);
     }
 
     /**
@@ -202,7 +198,7 @@ export class Input {
         }
 
         input.addEventListener('keyup', onKeyUp);
-        if (searchBtn) Button.getInstance(this.wGame).addButtonEvent(searchBtn, onClickSearch);
+        if (searchBtn) this.inputDtHelper.Button().addButtonEvent(searchBtn, onClickSearch);
     }
 
     /**

@@ -1,14 +1,8 @@
 export class Select {
     private wGame: any|Window;
     private dropDown;
-    private static instance: Select;
 
-    public static getInstance(wGame: any|Window): Select {
-        if (!this.instance) this.instance = new Select(wGame);
-        return this.instance;
-    }
-
-    private constructor(wGame: any|Window) {
+    constructor(wGame: any|Window) {
         this.wGame = wGame;
         this.dropDown = this.wGame.document.getElementsByClassName('dropDown')[0];
     }
@@ -89,7 +83,7 @@ export class Select {
         const selectorContent = select.getElementsByClassName('selectorContent')[0];
         const entryContainer = this.wGame.document.getElementById(select.id + '-entryContainer');
         const dtEntryContainer = this.dropDown.getElementsByClassName('entryContainer')[0];
-
+console.log(entryContainer);
         // Event for style of select
         let onPress = () => {
             selectorContent.classList.add('pressed');
