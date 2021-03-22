@@ -27,7 +27,7 @@ export class CustomWindowHelper {
      * Get an helper for create content container to insert in your custom window
      * @returns WindowContentHelper
      */
-    public WindowContent(): WindowContentHelper {
+    public get WindowContent(): WindowContentHelper {
         return this.windowsContent;
     }
 
@@ -37,7 +37,7 @@ export class CustomWindowHelper {
      * Get an helper for get instance of inputs helper
      * @returns InputDtHelper
      */
-    public getInputsHelper(): InputDtHelper {
+    public get getInputsHelper(): InputDtHelper {
         return new InputDtHelper(this.wGame);
     }
 }

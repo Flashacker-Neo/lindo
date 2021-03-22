@@ -203,4 +203,12 @@ export class DraggableWindowHelper {
     public isVisible(): boolean {
         return this.window.style.visibility === 'visible';
     }
+
+    public getHtmlElement(): HTMLDivElement {
+        return this.window;
+    }
+
+    public destroy() {
+        this.window.remove;
+    }
 }

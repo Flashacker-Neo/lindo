@@ -8,17 +8,15 @@ export class Checkbox {
     /**
      * Return an HTMLDivElement with dofus touch checkbox skin
      * @param id The div id
-     * @param text The text for label
-     * @param isCheck Define if checkbox is allready check
-     * @param customClass A custom className for add your css
+     * @param options The option of checkBox
      */
-    public createCheckbox(id: string, text: string, isCheck?: boolean, customClass?: string): HTMLDivElement {
+    public createCheckbox(id: string, options: {text: string, isCheck?: boolean, customClass?: string}): HTMLDivElement {
         const checkbox: HTMLDivElement = this.wGame.document.createElement('div');
         checkbox.id = id;
         checkbox.className = 'CheckboxLabel';
-        if (isCheck) checkbox.classList.add('on');
-        if (customClass) checkbox.classList.add(customClass);
-        checkbox.insertAdjacentText('afterbegin', text);
+        if (options.isCheck) checkbox.classList.add('on');
+        if (options.customClass) checkbox.classList.add(options.customClass);
+        checkbox.insertAdjacentText('afterbegin', options.text);
 
         return checkbox;
     }

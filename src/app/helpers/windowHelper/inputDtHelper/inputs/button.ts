@@ -8,16 +8,14 @@ export class Button {
     /**
      * Return a HTMLDivElement with dofus touch button skin
      * @param id The div id
-     * @param text The text inside
-     * @param color The color of button
-     * @param customClass A custom className for add your css
+     * @param options The options of button
      */
-    public createTextButton(id: string, text: string, color: ButtonColor, customClassName?: string): HTMLDivElement {
+    public createTextButton(id: string, options: {text: string, color: ButtonColor, customClassName?: string}): HTMLDivElement {
         const button: HTMLDivElement = this.wGame.document.createElement('div');
         button.id = id;
-        button.className = 'Button scaleOnPress ' + color;
-        if (customClassName) button.classList.add(customClassName);
-        button.insertAdjacentText('afterbegin', text);
+        button.className = 'Button scaleOnPress ' + options.color;
+        if (options.customClassName) button.classList.add(options.customClassName);
+        button.insertAdjacentText('afterbegin', options.text);
 
         return button;
     }
@@ -25,14 +23,13 @@ export class Button {
     /**
      * Return a HTMLDivElement with dofus touch button icon skin
      * @param id The div id
-     * @param icon The icon class name
-     * @param customClass A custom className for add your css
+     * @param options The options of button
      */
-     public createIconButton(id: string, icon: string, customClassName?: string): HTMLDivElement {
+     public createIconButton(id: string, options: {icon: string, customClassName?: string}): HTMLDivElement {
         const button: HTMLDivElement = this.wGame.document.createElement('div');
         button.id = id;
-        button.className = `Button scaleOnPress ${icon}`;
-        if (customClassName) button.classList.add(customClassName);
+        button.className = `Button scaleOnPress ${options.icon}`;
+        if (options.customClassName) button.classList.add(options.customClassName);
 
         const btnIcon: HTMLDivElement = this.wGame.document.createElement('div');
         btnIcon.className = 'btnIcon';

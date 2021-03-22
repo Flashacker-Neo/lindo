@@ -8,16 +8,15 @@ export class ProgressBarHelper {
     /**
      * Return an HTMLDivElement of with dofus touch progressBar skin
      * @param id The div id
-     * @param color The progressBar color
-     * @param percent The percentage of progress
+     * @param options The options of progressBar
      */
-    public createProgressBar(id: string, color: ProgressColor, percent?: number): HTMLDivElement {
+    public createProgressBar(id: string, options: {color: ProgressColor, percent?: number}): HTMLDivElement {
         const progressBar: HTMLDivElement = this.wGame.document.createElement('div');
         progressBar.id = id;
-        progressBar.className = `ProgressBar ${color}`;
-        progressBar.dataset.color = color;
-        if (!percent) percent = 0;
-        progressBar.style.webkitMaskSize = `${percent}% 100%`;
+        progressBar.className = `ProgressBar ${options.color}`;
+        progressBar.dataset.color = options.color;
+        if (!options.percent) options.percent = 0;
+        progressBar.style.webkitMaskSize = `${options.percent}% 100%`;
         progressBar.style.webkitMaskPosition = '0px 0px';
 
         const barFill: HTMLDivElement = this.wGame.document.createElement('div');

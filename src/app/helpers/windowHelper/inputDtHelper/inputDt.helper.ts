@@ -34,11 +34,14 @@ export class InputDtHelper {
                 background: #a3d52e;
                 border-radius: 2px;
             }
-            // Custom input
+            /* Custom input */
             input::-webkit-outer-spin-button,
             input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
+            }
+            .customNumber {
+                width: 45px;
             }
         `;
 
@@ -54,7 +57,7 @@ export class InputDtHelper {
      * Get an helper to create button with dofus touch style
      * @returns Button
      */
-    public Button(): Button {
+    public get Button(): Button {
         return this.button;
     }
 
@@ -62,7 +65,7 @@ export class InputDtHelper {
      * Get an helper to create checkbox with dofus touch style
      * @returns Checkbox
      */
-    public Checkbox(): Checkbox {
+    public get Checkbox(): Checkbox {
         return this.checkBox;
     }
 
@@ -70,7 +73,7 @@ export class InputDtHelper {
      * Get an helper to create input with dofus touch style
      * @returns Input
      */
-    public Input(): Input {
+    public get Input(): Input {
         return this.input;
     }
 
@@ -78,7 +81,7 @@ export class InputDtHelper {
      * Get an helper to create select with dofus touch style
      * @returns Select
      */
-    public Select(): Select {
+    public get Select(): Select {
         return this.select;
     }
 
@@ -86,7 +89,7 @@ export class InputDtHelper {
      * Get an helper to create progress bar with dofus touch style
      * @returns ProgressBarHelper
      */
-    public ProgressBar(): ProgressBarHelper {
+    public get ProgressBar(): ProgressBarHelper {
         return this.progressBar;
     }
 }

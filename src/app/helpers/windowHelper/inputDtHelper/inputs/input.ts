@@ -13,114 +13,120 @@ export class Input {
     /**
      * Return a HTMLDivElement with dofus touch input text skin
      * @param id The div id
-     * @param placeholder The text display before use
-     * @param maxLength Max lenght of input (default 50)
-     * @param searchButton Add a search button
-     * @param customClass A custom className for add your css
+     * @param options The options of input
      */
-    public createTextInput(id: string, placeholder: string, maxLength?: number, searchButton?: boolean, customClassName?: string): HTMLDivElement {
-        // create global container
-        const searchBox: HTMLDivElement = this.wGame.document.createElement('div');
-        searchBox.id = id;
-        searchBox.className = 'searchBox';
-        if (customClassName) searchBox.classList.add(customClassName);
+    public createTextInput(id: string,
+            options: {placeholder: string, value?: string, maxLength?: number, searchButton?: boolean, containerClassName?: string, inputClassName?: string}
+        ): HTMLDivElement {
+            // create global container
+            const searchBox: HTMLDivElement = this.wGame.document.createElement('div');
+            searchBox.id = id;
+            searchBox.className = 'searchBox';
+            if (options.containerClassName) searchBox.classList.add(options.containerClassName);
 
-        const inputFrame: HTMLDivElement = this.wGame.document.createElement('div');
-        inputFrame.className = 'inputFrame';
+            const inputFrame: HTMLDivElement = this.wGame.document.createElement('div');
+            inputFrame.className = 'inputFrame';
 
-        // create input field
-        const input: HTMLInputElement = this.wGame.document.createElement('input');
-        input.className = 'InputBox' ;
-        input.spellcheck = false;
-        input.autocapitalize = 'off';
-        input.autocomplete = 'off';
-        input.maxLength = maxLength ? maxLength : 50;
-        input.type = 'text';
-        input.placeholder = placeholder;
+            // create input field
+            const input: HTMLInputElement = this.wGame.document.createElement('input');
+            input.className = 'InputBox' ;
+            if (options.inputClassName) input.classList.add(options.inputClassName);
+            input.spellcheck = false;
+            input.autocapitalize = 'off';
+            input.autocomplete = 'off';
+            input.maxLength = options.maxLength ? options.maxLength : 50;
+            input.type = 'text';
+            input.placeholder = options.placeholder;
+            input.value = options.value ? options.value : '';
 
-        // create cancel/erase button
-        const cancelBtn: HTMLDivElement = this.wGame.document.createElement('div');
-        cancelBtn.className = 'cancelBtn Button scaleOnPress';
-        cancelBtn.style.display = 'none';
-        const btnIcon: HTMLDivElement = this.wGame.document.createElement('div');
-        btnIcon.className = 'btnIcon';
+            // create cancel/erase button
+            const cancelBtn: HTMLDivElement = this.wGame.document.createElement('div');
+            cancelBtn.className = 'cancelBtn Button scaleOnPress';
+            cancelBtn.style.display = 'none';
+            const btnIcon: HTMLDivElement = this.wGame.document.createElement('div');
+            btnIcon.className = 'btnIcon';
 
-        // create search button
-        const searchBtn: HTMLDivElement = this.inputDtHelper.Button().createIconButton(id + '-searchBtn', 'searchBtn');
+            // create search button
+            const searchBtn: HTMLDivElement = this.inputDtHelper.Button.createIconButton(id + '-searchBtn', {icon: 'searchBtn'});
 
-        // construct final element
-        cancelBtn.insertAdjacentElement('afterbegin', btnIcon);
-        inputFrame.insertAdjacentElement('afterbegin', input);
-        inputFrame.insertAdjacentElement('beforeend', cancelBtn);
-        searchBox.insertAdjacentElement('afterbegin', inputFrame);
-        if (searchButton) searchBox.insertAdjacentElement('beforeend', searchBtn);
+            // construct final element
+            cancelBtn.insertAdjacentElement('afterbegin', btnIcon);
+            inputFrame.insertAdjacentElement('afterbegin', input);
+            inputFrame.insertAdjacentElement('beforeend', cancelBtn);
+            searchBox.insertAdjacentElement('afterbegin', inputFrame);
+            if (options.searchButton) searchBox.insertAdjacentElement('beforeend', searchBtn);
 
-        return searchBox;
+            return searchBox;
     }
 
     /**
      * Return a HTMLDivElement with dofus touch input chat skin
      * @param id The div id
-     * @param sendButton Add a send button
-     * @param maxLength Max length of input (default 256)
-     * @param color The color of text in input
-     * @param customClassName A custom className for add your css
+     * @param options The option of input
      */
-    public createChatInput(id: string, sendButton?: boolean, maxLength?: number, color?: InputColor, customClassName?: string): HTMLDivElement {
-        const container: HTMLDivElement = this.wGame.document.createElement('div');
-        container.id = id;
-        container.className = 'chat';
-        if (customClassName) container.classList.add(customClassName);
-        container.style.display = 'flex';
-        container.style.position = 'initial';
-        container.style.width = 'calc(100% - 5px)';
-        container.style.height = 'auto'; // fix height from dt class
+    public createChatInput(id: string, 
+            options?: {sendButton?: boolean, maxLength?: number, color?: InputColor, containerClassName?: string, inputClassName?: string}
+        ): HTMLDivElement {
+            const container: HTMLDivElement = this.wGame.document.createElement('div');
+            container.id = id;
+            container.className = 'chat';
+            if (options.containerClassName) container.classList.add(options.containerClassName);
+            container.style.display = 'flex';
+            container.style.position = 'initial';
+            container.style.width = 'calc(100% - 5px)';
+            container.style.height = 'auto'; // fix height from dt class
 
-        // create input field
-        const input: HTMLInputElement = this.wGame.document.createElement('input');
-        input.className = 'inputChat inputBox channel0';
-        if (color) input.classList.replace('channel0', color);
-        input.style.marginLeft = '0px'; // fix margin from dt class
-        input.spellcheck = false;
-        input.autocapitalize = 'off';
-        input.autocomplete = 'off';
-        input.maxLength = maxLength ? maxLength : 256;
-        input.type = 'text';
+            // create input field
+            const input: HTMLInputElement = this.wGame.document.createElement('input');
+            input.className = 'inputChat inputBox channel0';
+            if (options.inputClassName) input.classList.add(options.inputClassName);
+            if (options.color) input.classList.replace('channel0', options.color);
+            input.style.marginLeft = '0px'; // fix margin from dt class
+            input.spellcheck = false;
+            input.autocapitalize = 'off';
+            input.autocomplete = 'off';
+            input.maxLength = options.maxLength ? options.maxLength : 256;
+            input.type = 'text';
 
-        // create search button
-        const sendBtn: HTMLDivElement = this.wGame.document.createElement('div');
-        sendBtn.className = 'sendButton greenButton Button scaleOnPress';
-        const btnIconSend: HTMLDivElement = this.wGame.document.createElement('div');
-        btnIconSend.className = 'btnIcon';
+            // create search button
+            const sendBtn: HTMLDivElement = this.wGame.document.createElement('div');
+            sendBtn.className = 'sendButton greenButton Button scaleOnPress';
+            const btnIconSend: HTMLDivElement = this.wGame.document.createElement('div');
+            btnIconSend.className = 'btnIcon';
 
-        sendBtn.insertAdjacentElement('afterbegin', btnIconSend);
-        container.insertAdjacentElement('afterbegin', input);
-        if (sendButton) container.insertAdjacentElement('beforeend', sendBtn);
+            sendBtn.insertAdjacentElement('afterbegin', btnIconSend);
+            container.insertAdjacentElement('afterbegin', input);
+            if (options.sendButton) container.insertAdjacentElement('beforeend', sendBtn);
 
-        return container;
+            return container;
     }
 
     /**
      * Return a HTMLDivElement with dofus touch input number skin
      * @param id The div id
-     * @param placeholder The number to display before use
-     * @param maxLength Max lenght of input (default 50)
-     * @param customClass A custom className for add your css
+     * @param options The options of input
      */
-    public createNumberInput(id: string, placeholder?: string, maxLength?: number, customClassName?: string): HTMLDivElement {
-        const searchBox: HTMLDivElement = this.wGame.document.createElement('div');
-        searchBox.id = id;
-        if (customClassName) searchBox.classList.add(customClassName);
+    public createNumberInput(
+            id: string, 
+            options?: {label?: string, placeholder?: string, value?: string, maxLength?: number, containerClassName?: string, inputClassName?: string}
+        ): HTMLDivElement {
 
-        const input: HTMLInputElement = this.wGame.document.createElement('input');
-        input.className = 'NumberInputBox';
-        input.placeholder = placeholder ? placeholder : '0';
-        input.maxLength = maxLength ? maxLength : 14;
-        input.type = 'number';
+            const searchBox: HTMLDivElement = this.wGame.document.createElement('div');
+            searchBox.id = id;
+            if (options.label && options.label.length > 0) searchBox.insertAdjacentText('afterbegin', options.label);
+            if (options.containerClassName) searchBox.classList.add(options.containerClassName);
 
-        searchBox.insertAdjacentElement('afterbegin', input);
+            const input: HTMLInputElement = this.wGame.document.createElement('input');
+            input.className = 'NumberInputBox customNumber';
+            if (options.inputClassName) input.classList.add(options.inputClassName);
+            input.value = options.value ? options.value : '0';
+            input.placeholder = options.placeholder ? options.placeholder : '';
+            input.maxLength = options.maxLength ? options.maxLength : 14;
+            input.type = 'number';
 
-        return searchBox;
+            searchBox.insertAdjacentElement('beforeend', input);
+
+            return searchBox;
     }
 
     /**
@@ -173,7 +179,7 @@ export class Input {
         btnIcon.addEventListener('click', onClickCancel);
 
         // return callBack when search button press
-        if (searchBtn) this.inputDtHelper.Button().addButtonEvent(searchBtn, onClickSearch);
+        if (searchBtn) this.inputDtHelper.Button.addButtonEvent(searchBtn, onClickSearch);
     }
 
     /**
@@ -198,7 +204,7 @@ export class Input {
         }
 
         input.addEventListener('keyup', onKeyUp);
-        if (searchBtn) this.inputDtHelper.Button().addButtonEvent(searchBtn, onClickSearch);
+        if (searchBtn) this.inputDtHelper.Button.addButtonEvent(searchBtn, onClickSearch);
     }
 
     /**

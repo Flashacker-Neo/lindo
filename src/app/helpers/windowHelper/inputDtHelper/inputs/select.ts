@@ -13,30 +13,31 @@ export class Select {
      * @param choices Array of choices in select list
      * @param customClassName A custom className for add your css
      */
-    public createSelect(id: string, choices?: Array<any>, customClassName?: string): HTMLDivElement {
-        // Create container of select
-        const selectBox: HTMLDivElement = this.wGame.document.createElement('div');
-        selectBox.id = id;
-        selectBox.className = 'Selector';
-        if (customClassName) selectBox.classList.add(customClassName);
-        selectBox.style.width = '100%'; // Remove when finish
+    public createSelect(id: string, choices: Array<{id: string, text: string, textInSelect?: string, ticked?: boolean}>, customClassName?: string
+        ): HTMLDivElement {
+            // Create container of select
+            const selectBox: HTMLDivElement = this.wGame.document.createElement('div');
+            selectBox.id = id;
+            selectBox.className = 'Selector';
+            if (customClassName) selectBox.classList.add(customClassName);
+            selectBox.style.width = '100%'; // Remove when finish
 
-        // Child of container for display select element
-        const selectorContent: HTMLDivElement = this.wGame.document.createElement('div');
-        selectorContent.className = 'selectorContent Button';
-        selectorContent.textContent = choices[0].textInSelect ? choices[0].textInSelect : choices[0].text;
+            // Child of container for display select element
+            const selectorContent: HTMLDivElement = this.wGame.document.createElement('div');
+            selectorContent.className = 'selectorContent Button';
+            selectorContent.textContent = choices[0].textInSelect ? choices[0].textInSelect : choices[0].text;
 
-        // Button for activate drop down
-        const openBtn: HTMLDivElement = this.wGame.document.createElement('div');
-        openBtn.className = 'buttonOpen';
+            // Button for activate drop down
+            const openBtn: HTMLDivElement = this.wGame.document.createElement('div');
+            openBtn.className = 'buttonOpen';
 
-        selectBox.insertAdjacentElement('afterbegin', openBtn);
-        selectBox.insertAdjacentElement('afterbegin', selectorContent);
+            selectBox.insertAdjacentElement('afterbegin', openBtn);
+            selectBox.insertAdjacentElement('afterbegin', selectorContent);
 
-        // Create EntryList for choices
-        this.createSelectEntryList(id, choices);
+            // Create EntryList for choices
+            this.createSelectEntryList(id, choices);
 
-        return selectBox;
+            return selectBox;
     }
 
     /**
@@ -44,7 +45,7 @@ export class Select {
      * @param id The select div id
      * @param choices Array of choices in select list
      */
-    private createSelectEntryList(id: string, choices?: Array<any>) {
+    private createSelectEntryList(id: string, choices?: Array<{id: string, text: string, textInSelect?: string, ticked?: boolean}>) {
         // Container for all element
         const entryContainer: HTMLDivElement = this.wGame.document.createElement('div');
         entryContainer.className = 'entryContainer';
@@ -83,7 +84,7 @@ export class Select {
         const selectorContent = select.getElementsByClassName('selectorContent')[0];
         const entryContainer = this.wGame.document.getElementById(select.id + '-entryContainer');
         const dtEntryContainer = this.dropDown.getElementsByClassName('entryContainer')[0];
-console.log(entryContainer);
+
         // Event for style of select
         let onPress = () => {
             selectorContent.classList.add('pressed');
