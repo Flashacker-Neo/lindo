@@ -158,7 +158,8 @@ export class ShowResources extends Mod {
     }
 
     private create() {
-        if (this.isHide) this.isHide = false;
+        this.isHide = false;
+        this.enabled = true;
 
         this.resourcesBox = this.wGame.document.createElement('div');
         this.resourcesBox.id = 'resourcesBox';
