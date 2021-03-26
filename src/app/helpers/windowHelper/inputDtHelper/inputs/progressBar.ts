@@ -16,11 +16,10 @@ export class ProgressBarHelper {
         progressBar.className = `ProgressBar ${options.color}`;
         progressBar.dataset.color = options.color;
         if (!options.percent) options.percent = 0;
-        progressBar.style.webkitMaskSize = `${options.percent}% 100%`;
-        progressBar.style.webkitMaskPosition = '0px 0px';
 
-        const barFill: HTMLDivElement = this.wGame.document.createElement('div');
+        const barFill: any = this.wGame.document.createElement('div');
         barFill.className = 'barFill';
+        barFill.style.webkitMaskSize = `${options.percent}% 100%`;
 
         barFill.insertAdjacentHTML('afterbegin', '<div class="barColor"></div>');
         progressBar.insertAdjacentHTML('afterbegin', '<div class="barBg"></div>');
