@@ -1,6 +1,7 @@
 export class Select {
     private wGame: any|Window;
     private dropDown;
+    private elements: Array<{htmlElmnt: HTMLDivElement, callBack: any}> = [];
 
     constructor(wGame: any|Window) {
         this.wGame = wGame;
@@ -180,5 +181,15 @@ export class Select {
         };
 
         dropDownOverlay.addEventListener('click', hideDropDown);
+    }
+
+    /**
+     * Use this for remove all the select element (DropDown and input)
+     * @param element The select element
+     */
+    public removeSelect(element) {
+        const entryContainer = this.wGame.document.getElementById(element.id + '-entryContainer');
+        entryContainer.remove();
+        element.remove();
     }
 }
