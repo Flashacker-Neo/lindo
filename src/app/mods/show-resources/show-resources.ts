@@ -80,17 +80,17 @@ export class ShowResources extends Mod {
      * Use to load map informations when player activate mod in game
      */
     private loadMapInfoOnStart() {
-        // Get data from isoEngine
-        const interactives = this.wGame.isoEngine.mapRenderer.interactiveElements;
-        const stated = this.wGame.isoEngine.mapRenderer.statedElements;
-
-        if (interactives != null && stated != null) {
+        if (this.wGame.isoEngine.mapRenderer.isReady) {
             const interactiveElements = [];
             const statedElements = [];
 
+            // Get data from isoEngine
+            const interactives = this.wGame.isoEngine.mapRenderer.interactiveElements;
+            const stated = this.wGame.isoEngine.mapRenderer.statedElements;
+
             // Push data in Array
             for(const i in interactives) { interactiveElements.push(interactives[i]); }
-            for(const s in stated) { statedElements.push(stated[s]); }
+            for(const s in stated) { statedElements.push({elementId: stated[s].id, elementState: stated[s].state}); }
 
             this.loadDataTry = 0;
             this.onMapComplementaryInfos(interactiveElements, statedElements);
@@ -211,6 +211,7 @@ export class ShowResources extends Mod {
 
     public reset(): void {
         super.reset();
+        this.wGame.document.getElementById('resourcesBoxCss').remove();
         this.clear();
     }
 }
