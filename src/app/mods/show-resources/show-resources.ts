@@ -35,6 +35,9 @@ export class ShowResources extends Mod {
                     background-color: rgba(0, 0, 0, 0.55);
                     border-radius: 0 0 5px 5px;
                     padding: 4px 2px;
+                    background: rgba(120, 120, 120, 0.25);
+                    box-shadow: #505050 1px 1px 2px;
+                    text-shadow: 0 0 5px #000;
                 }
 
                 .resource-item {
@@ -44,7 +47,13 @@ export class ShowResources extends Mod {
                     padding: 0 5px;
                     margin: 0 5px;
                     border-radius: 4px;
-                    background-color: #00000033;
+                    background-color: #6b6b6b33;
+                    font-weight: bold;
+                    font-size: 12px;
+                }
+
+                .resource-item div {
+                    height: 35px;
                 }
 
                 .resource-item p {
