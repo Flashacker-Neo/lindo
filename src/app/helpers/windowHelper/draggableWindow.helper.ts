@@ -209,6 +209,10 @@ export class DraggableWindowHelper {
     }
 
     public destroy() {
-        this.window.remove();
+        try {
+            this.window.remove();
+        } catch (ex) {
+            console.error(ex);
+        }
     }
 }

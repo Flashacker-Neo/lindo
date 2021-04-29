@@ -189,7 +189,11 @@ export class Select {
      */
     public removeSelect(element) {
         const entryContainer = this.wGame.document.getElementById(element.id + '-entryContainer');
-        entryContainer.remove();
-        element.remove();
+        try {
+            entryContainer.remove();
+            element.remove();
+        } catch (ex) {
+            console.error(ex);
+        }
     }
 }
