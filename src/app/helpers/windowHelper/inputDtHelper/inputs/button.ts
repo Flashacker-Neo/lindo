@@ -76,6 +76,17 @@ export class Button {
     public enabledButton(button: HTMLDivElement) {
         if (button.classList.contains('disabled')) button.classList.remove('disabled');
     }
+
+    /**
+     * Change the color of button
+     * @param button The button you wan't to change
+     * @param buttonColor The color to applies
+     */
+    public changeButtonColor(button: HTMLDivElement, buttonColor: ButtonColor) {
+        for (let color in ButtonColor) {
+            if (button.classList.contains(ButtonColor[color])) button.classList.replace(ButtonColor[color], buttonColor);
+        }
+    }
 }
 
 export enum ButtonColor {
