@@ -11,7 +11,7 @@ export class WindowContentHelper {
                 .scrollableContent {
                     overflow-y: scroll;
                     overflow-x: hidden;
-                    width: 100%;
+                    width: calc(100% - 14px);
                     padding: 0 7px;
                     margin-right: 0 !important;
                 }
