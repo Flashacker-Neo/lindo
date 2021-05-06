@@ -1,5 +1,10 @@
+import { InputDtHelper } from "./inputDtHelper/inputDt.helper";
+
 export class DraggableWindowHelper {
     public wGame: any|Window;
+
+    private inputHelper: InputDtHelper;
+
     private newDragPosX = 0;
     private newDragPosY = 0;
     private currentDragPosX = 0;
@@ -8,6 +13,9 @@ export class DraggableWindowHelper {
     private resizePosY = 0;
     private isCustomElmnt: boolean = false;
 
+    private haveFullScreen: boolean = false;
+    private oldState: {posX: any, posY: any, width: any, height: any};
+
     private window: HTMLDivElement;
     private windowTitle;
     private windowBody;
@@ -15,6 +23,7 @@ export class DraggableWindowHelper {
 
     constructor(wGame: any|Window) {
         this.wGame = wGame;
+        this.inputHelper = new InputDtHelper(this.wGame);
     }
 
     /**
@@ -91,6 +100,55 @@ export class DraggableWindowHelper {
     }
 
     /**
+     * Add button to display window in fullscreen
+     */
+    public addFullScreenButton(): DraggableWindowHelper {
+        this.haveFullScreen = true;
+
+        const btnHelper = this.inputHelper.Button;
+        const foreground = this.wGame.document.getElementsByClassName('foreground')[0];
+
+        const extendBtn = btnHelper.createIconButton(this.window.id + '-fs-extend-btn', {icon: 'plusButton'});
+        const reduceBtn = btnHelper.createIconButton(this.window.id + '-fs-reduce-btn', {icon: 'minusButton'});
+        reduceBtn.style.display = 'none';
+
+        let extendWindow = () => {
+            extendBtn.style.display = 'none';
+            reduceBtn.style.display = '';
+
+            this.oldState = {
+                posX: this.window.style.left,
+                posY: this.window.style.top,
+                width: this.window.style.width,
+                height: this.window.style.height
+            }
+
+            this.window.style.top = '0';
+            this.window.style.left = '0';
+            this.window.style.width = (foreground.offsetLeft + foreground.offsetWidth) + 'px';
+            this.window.style.height = (foreground.offsetTop + foreground.offsetHeight) + 'px';
+        };
+
+        let reduceWindow = () => {
+            reduceBtn.style.display = 'none';
+            extendBtn.style.display = '';
+
+            this.window.style.top = this.oldState.posY;
+            this.window.style.left = this.oldState.posX;
+            this.window.style.width = this.oldState.width;
+            this.window.style.height = this.oldState.height;
+        };
+
+        this.addButtonToRightToHeader(extendBtn);
+        this.addButtonToRightToHeader(reduceBtn);
+
+        btnHelper.addButtonEvent(extendBtn, extendWindow);
+        btnHelper.addButtonEvent(reduceBtn, reduceWindow);
+
+        return this;
+    }
+
+    /**
      * Make the window draggable
      * @param draggableAnchor Use if is custom window
      */
@@ -154,6 +212,11 @@ export class DraggableWindowHelper {
         }
 
         let resizeMouseDown = (event: TouchEvent) => {
+            if (this.haveFullScreen) {
+                this.wGame.document.getElementById(this.window.id + '-fs-extend-btn').style.display = '';
+                this.wGame.document.getElementById(this.window.id + '-fs-reduce-btn').style.display = 'none';
+            }
+
             const e = event.touches[0];
             this.resizePosX = e.clientX;
             this.resizePosY = e.clientY;
