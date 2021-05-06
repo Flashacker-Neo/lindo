@@ -23,6 +23,7 @@ export class InputDtHelper {
                 .customScrollerContent {
                     overflow-y: scroll;
                     margin-right: 0 !important;
+                    height: inherit;
                 }
                 .customScrollerContent::-webkit-scrollbar {
                     width: 2px;
