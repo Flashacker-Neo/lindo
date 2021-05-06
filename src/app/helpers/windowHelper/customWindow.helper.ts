@@ -4,13 +4,9 @@ import { WindowContentHelper } from "./windowContent.helper";
 
 export class CustomWindowHelper {
     private wGame: any | Window;
-    private windowsContent: WindowContentHelper;
-    private inputsHelper: InputDtHelper;
 
     constructor(wGame) {
         this.wGame = wGame;
-        this.windowsContent = new WindowContentHelper(this.wGame);
-        this.inputsHelper = new InputDtHelper(this.wGame);
     }
 
     // Windows Helper
@@ -28,7 +24,7 @@ export class CustomWindowHelper {
      * @returns WindowContentHelper
      */
     public get WindowContent(): WindowContentHelper {
-        return this.windowsContent;
+        return new WindowContentHelper(this.wGame);
     }
 
     // Input Helper
