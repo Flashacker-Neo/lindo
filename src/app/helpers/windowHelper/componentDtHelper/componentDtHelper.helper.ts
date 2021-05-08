@@ -1,4 +1,5 @@
 import { List } from "./components/list";
+import { Table } from "./components/table";
 
 export class ComponentDtHelper {
     private wGame: any|Window;
@@ -30,6 +31,11 @@ export class ComponentDtHelper {
             .menu .listItem.odd {
                 background-color: rgb(43, 44, 39);
             }
+
+            .customCol {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
             `;
 
             this.wGame.document.querySelector('head').appendChild(componentCss);
@@ -39,11 +45,19 @@ export class ComponentDtHelper {
     }
 
     /**
-     * Get an helper to create button with dofus touch style
+     * Get an helper to create list with dofus touch style
      * @returns Button
      */
     public get List(): List {
         return this.list;
+    }
+
+    /**
+     * Get a table instance to create one table
+     * @returns Button
+     */
+     public get Table(): Table {
+        return new Table(this.wGame);
     }
 
 }
