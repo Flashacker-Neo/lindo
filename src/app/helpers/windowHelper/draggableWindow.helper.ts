@@ -42,7 +42,7 @@ export class DraggableWindowHelper {
      * @param title Title will show to user
      * @param id The id of that window
      */
-    public createDofusWindow(title: string, id: string): DraggableWindowHelper {
+    public createDofusWindow(title: string, id: string, options?: {customClassBody?: string}): DraggableWindowHelper {
         this.window = this.wGame.document.createElement('div');
         this.window.className = "window";
         this.window.id = id;
@@ -64,6 +64,8 @@ export class DraggableWindowHelper {
         this.closeButton = this.window.children[1].children[0].children[1];
         this.windowTitle = this.window.children[1].children[0].children[0];
         this.windowBody = this.window.children[1].children[1].children[0];
+
+        if (options && options.customClassBody) this.windowBody.classList.add(options.customClassBody);
 
         this.closeButton.addEventListener('click', () => this.window.style.visibility = "hidden");
 
