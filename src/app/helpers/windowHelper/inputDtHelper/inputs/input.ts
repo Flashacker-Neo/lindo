@@ -108,7 +108,7 @@ export class Input {
      */
     public createNumberInput(
             id: string, 
-            options?: {label?: string, placeholder?: string, value?: string, maxLength?: number, containerClassName?: string, inputClassName?: string}
+            options?: {label?: string, placeholder?: string, value?: string, maxLength?: number, step?: string, containerClassName?: string, inputClassName?: string}
         ): HTMLDivElement {
 
             const searchBox: HTMLDivElement = this.wGame.document.createElement('div');
@@ -122,6 +122,7 @@ export class Input {
             input.value = options.value ? options.value : '0';
             input.placeholder = options.placeholder ? options.placeholder : '';
             input.maxLength = options.maxLength ? options.maxLength : 14;
+            input.step = options.step ? options.step : '0.1';
             input.type = 'number';
 
             searchBox.insertAdjacentElement('beforeend', input);
@@ -148,7 +149,7 @@ export class Input {
     private addInputNumberEvent(searchBox: HTMLDivElement, callBack: any) {
         const input: any = searchBox.children[0];
         let onKeyUp = () => {
-            if (input.value) callBack(parseInt(input.value));
+            if (input.value) callBack(parseFloat(input.value));
         };
         input.addEventListener('keyup', onKeyUp);
     }
