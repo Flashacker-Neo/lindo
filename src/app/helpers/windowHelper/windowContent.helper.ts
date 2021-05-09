@@ -34,6 +34,7 @@ export class WindowContentHelper {
                     max-height: 100%;
                     display: flex;
                     width: 100%;
+                    min-height: 48px;
                 }
                 .customContent::before {
                     content: "";
