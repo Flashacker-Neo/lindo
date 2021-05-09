@@ -5,7 +5,7 @@ export class Table {
     private tableHeader: HTMLDivElement;
     private tableContent: HTMLDivElement;
 
-    private headerConf: Array<{text: string, style: {cssRule: string, value: string}}>;
+    private columns: {name: string, style: {cssRule: string, value: string}[], caseStyle?: {cssRule: string, value: string}[]}[];
 
     constructor(wGame: any|Window) {
         this.wGame = wGame;
@@ -18,8 +18,8 @@ export class Table {
      * @param customClass A custom className for add your css
      * @returns An instance of this Table
      */
-    public createTable(id: string, header: Array<{text: string, style: {cssRule: string, value: string}}>, customClass?: string): Table {
-        this.headerConf = header;
+    public createTable(id: string, columns: {name: string, style: {cssRule: string, value: string}[], caseStyle?: {cssRule: string, value: string}[]}[], customClass?: string): Table {
+        this.columns = columns;
 
         // Define container
         this.table = this.wGame.document.createElement('div');
@@ -40,11 +40,13 @@ export class Table {
         const headerRow: HTMLDivElement = this.wGame.document.createElement('div');
         headerRow.className = 'row';
 
-        this.headerConf.forEach((column) => {
+        this.columns.forEach((column) => {
             const col: HTMLDivElement = this.wGame.document.createElement('div');
             col.className = 'col';
-            col.insertAdjacentHTML('beforeend', `<div class="headerContent">${column.text}</div>`)
-            col.style[column.style.cssRule] = column.style.value;
+            col.insertAdjacentHTML('beforeend', `<div class="headerContent">${column.name}</div>`);
+            column.style.forEach(style => {
+                col.style[style.cssRule] = style.value;
+            });
 
             headerRow.insertAdjacentElement('beforeend', col);
         });
@@ -99,13 +101,20 @@ export class Table {
                 if (typeof col == 'string') colDiv.insertAdjacentText('beforeend', col);
                 else colDiv.insertAdjacentElement('afterbegin', col);
 
-                if (j <= this.headerConf.length) {
-                    colDiv.style[this.headerConf[j].style.cssRule] = this.headerConf[j].style.value;
+                if (j <= this.columns.length) {
+                    this.columns[j].style.forEach(style => {
+                        colDiv.style[style.cssRule] = style.value;
+                    });
+                    if (this.columns[j].caseStyle) {
+                        this.columns[j].caseStyle.forEach(caseStyle => {
+                            colDiv.style[caseStyle.cssRule] = caseStyle.value;
+                        });
+                    }
                     rowDiv.insertAdjacentElement('beforeend', colDiv);
                 }
             });
 
-            if (row.length > this.headerConf.length) console.log(`[Error] This row is longer than header (row:${i}) : `, row);
+            if (row.length > this.columns.length) console.log(`[Error] This row is longer than header (row:${i}) : `, row);
 
             this.tableContent.insertAdjacentElement('beforeend', rowDiv);
         });
