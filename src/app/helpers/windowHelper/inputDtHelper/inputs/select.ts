@@ -21,7 +21,6 @@ export class Select {
             selectBox.id = id;
             selectBox.className = 'Selector';
             if (customClassName) selectBox.classList.add(customClassName);
-            selectBox.style.width = '100%'; // Remove when finish
 
             // Child of container for display select element
             const selectorContent: HTMLDivElement = this.wGame.document.createElement('div');
