@@ -15,6 +15,7 @@ export class ComponentDtHelper {
             componentCss.innerHTML = `
             .menu {
                 width: 100%;
+                max-height: inherit;
             }
             .menu .listItem.selected {
                 border-image: url(./assets/ui/table/tableHighlight.png) 0 fill / 1 / 0 stretch;
