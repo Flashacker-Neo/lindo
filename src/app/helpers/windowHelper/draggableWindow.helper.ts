@@ -67,7 +67,7 @@ export class DraggableWindowHelper {
 
         if (options && options.customClassBody) this.windowBody.classList.add(options.customClassBody);
 
-        this.closeButton.addEventListener('click', () => this.window.style.visibility = "hidden");
+        this.closeButton.addEventListener('click', () => this.window.style.display = "none");
 
         return this;
     }
@@ -258,15 +258,15 @@ export class DraggableWindowHelper {
     }
 
     public show() {
-        this.window.style.visibility = "visible";
+        this.window.style.display = '';
     }
 
     public hide() {
-        this.window.style.visibility = 'hidden';
+        this.window.style.display = 'none';
     }
 
     public isVisible(): boolean {
-        return this.window.style.visibility === 'visible';
+        return this.window.style.display !== 'none';
     }
 
     public getHtmlElement(): HTMLDivElement {
