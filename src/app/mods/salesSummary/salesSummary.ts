@@ -101,7 +101,7 @@ export class SalesSummary extends Mod {
                     this.loadData().then(() => {
                         this.table.addData(this.sales);
                         this.resumeBox.children[0].insertAdjacentText('beforeend', `Item(s) vendu : ${this.sales.length}`);
-                        this.resumeBox.children[1].insertAdjacentText('beforeend', `Total gains : ${this.totalSales} k`);
+                        this.resumeBox.children[1].insertAdjacentText('beforeend', `Total gains : ${this.formatNumber(this.totalSales)} k`);
                         this.window.show();
                     });
                 }, 500);
@@ -132,7 +132,11 @@ export class SalesSummary extends Mod {
         img.insertAdjacentHTML('afterbegin', `<img src="https://dofustouch.cdn.ankama.com/assets/2.34.8_kbu_6h45kmUJaqYJSzE(uwaos..pYYKs/gfx/items/${item.iconId}.png">`);
     
         this.totalSales += +price;
-        this.sales.push([img, item.name, quantity, price + ' k']);
+        this.sales.push([img, item.name, quantity, this.formatNumber(price) + ' k']);
+    }
+
+    private formatNumber(number: number): string {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
     
 }
