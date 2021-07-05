@@ -716,6 +716,7 @@ export namespace Option {
             private _monster_tooltip: boolean;
             private _monster_tooltip_shortcut: string;
             private _verticaltimeline: boolean;
+            private _dtmap_shortcut: string;
 
             get party_info_pp():boolean{
                 return this._party_info_pp;
@@ -870,6 +871,15 @@ export namespace Option {
                 this._verticaltimeline = verticaltimeline;
             }
 
+            get dtmap_shortcut(): string {
+                return this._dtmap_shortcut;
+            }
+
+            set dtmap_shortcut(dtmap_shortcut: string) {
+                this.settingsProvider.write('option.vip.general.dtmap_shortcut', dtmap_shortcut);
+                this._dtmap_shortcut = dtmap_shortcut;
+            }
+
             constructor(private settingsProvider: SettingsProvider) {
                 this.disable_inactivity = this.settingsProvider.read('option.vip.general.disable_inactivity');
                 this.health_bar = this.settingsProvider.read('option.vip.general.health_bar');
@@ -888,6 +898,7 @@ export namespace Option {
                 this._monster_tooltip = this.settingsProvider.read('option.vip.general.monster_tooltip');
                 this.monster_tooltip_shortcut = this.settingsProvider.read('option.vip.general.monster_tooltip_shortcut');
                 this.verticaltimeline = this.settingsProvider.read('option.vip.general.verticaltimeline');
+                this._dtmap_shortcut = this.settingsProvider.read('option.vip.general.dtmap_shortcut');
             }
         }
 

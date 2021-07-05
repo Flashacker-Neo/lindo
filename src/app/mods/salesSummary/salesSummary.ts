@@ -2,7 +2,7 @@ import { Table } from "../../helpers/windowHelper/componentDtHelper/components/t
 import { CustomWindowHelper } from "../../helpers/windowHelper/customWindow.helper";
 import { DraggableWindowHelper } from "../../helpers/windowHelper/draggableWindow.helper";
 import { Mod } from "../mod";
-const axios = require('axios');
+import axios from 'axios';
 
 export class SalesSummary extends Mod {
     private sales: any[][] = [];

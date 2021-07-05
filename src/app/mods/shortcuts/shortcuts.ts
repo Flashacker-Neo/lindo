@@ -152,6 +152,10 @@ export class Shortcuts extends Mod {
                     this.wGame.document.getElementById('sales-summary').style.display = 'none';
                     winClosed++;
                 }
+                if (this.wGame.document.getElementById('dtmap').style.display !== 'none' && winClosed < 1) {
+                    this.wGame.document.getElementById('dtmap').style.display = 'none';
+                    winClosed++;
+                }
                 if (this.params.diver.active_open_menu && !winClosed) {
                     // If no window closed open menu
                     // @ts-ignore
