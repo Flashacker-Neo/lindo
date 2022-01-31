@@ -145,7 +145,7 @@ export class PartyMember extends Mod{
     public reset() {
         super.reset();
         this.destroy();
-        const pmomCss = this.wGame.document.getElementById('pmomCss');
-        if (pmomCss && pmomCss.parentElement) pmomCss.parentElement.removeChild(pmomCss);
+        let pmomCss = this.wGame.document.getElementById('pmomCss');
+        if (pmomCss) pmomCss.remove();
     }
 }

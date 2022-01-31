@@ -709,10 +709,10 @@ export namespace Option {
             private _hidden_mount: boolean;
             private _party_info_pp:boolean;
             private _party_info_lvl:boolean;
+            private _harvest_indicator: boolean;
             private _show_resources: boolean;
             private _show_resources_shortcut: string;
             private _party_member_on_map:boolean;
-            private _harvest_indicator: boolean;
             private _monster_tooltip: boolean;
             private _monster_tooltip_shortcut: string;
             private _verticaltimeline: boolean;
@@ -808,6 +808,15 @@ export namespace Option {
                 this._health_bar_shortcut = health_bar_shortcut;
             }
 
+            get harvest_indicator(): boolean {
+                return this._harvest_indicator;
+            }
+
+            set harvest_indicator(harvest_indicator: boolean) {
+                this.settingsProvider.write('option.vip.general.harvest_indicator', harvest_indicator);
+                this._harvest_indicator = harvest_indicator;
+            }
+            
             get show_resources(): boolean {
                 return this._show_resources;
             }
@@ -833,15 +842,6 @@ export namespace Option {
             set party_member_on_map(party_member_on_map: boolean) {
                 this.settingsProvider.write('option.vip.general.party_member_on_map', party_member_on_map);
                 this._party_member_on_map = party_member_on_map;
-            }
-
-            get harvest_indicator(): boolean {
-                return this._harvest_indicator;
-            }
-
-            set harvest_indicator(harvest_indicator: boolean) {
-                this.settingsProvider.write('option.vip.general.harvest_indicator', harvest_indicator);
-                this._harvest_indicator = harvest_indicator;
             }
 
             get monster_tooltip(): boolean {
@@ -891,6 +891,7 @@ export namespace Option {
                 this.hidden_mount = this.settingsProvider.read('option.vip.general.hidden_mount');
                 this.party_info_pp = this.settingsProvider.read('option.vip.general.party_info_pp');
                 this.party_info_lvl = this.settingsProvider.read('option.vip.general.party_info_lvl');
+                this.harvest_indicator = this.settingsProvider.read('option.vip.general.harvest_indicator');
                 this.show_resources = this.settingsProvider.read('option.vip.general.show_resources');
                 this.show_resources_shortcut = this.settingsProvider.read('option.vip.general.show_resources_shortcut');
                 this.party_member_on_map = this.settingsProvider.read('option.vip.general.party_member_on_map');

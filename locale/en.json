@@ -82,6 +82,7 @@
             "estimator": "Estimating spell damage in battle",
             "fightchronometer" : "Show combats chronometer",
             "zaapsearchfilter" : "Show zaap search filter",
+            "monster-tooltip": "Display monsters groups informations on the map",
             "show-resources" : "Show map resources",
             "harvest-indicator" : "Activate the display of the remaining time below the ressources",
             "party-member-on-map" : "Add an indicator to know if the members of a group are on the same map",

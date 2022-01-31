@@ -13,6 +13,7 @@ import {ShortcutsApplicationComponent} from "app/windows/main/menus/shortcuts/ap
 import {ShortcutsModComponent} from 'app/windows/main/menus/shortcuts/mod/mod.component';
 import {ShortcutsInventoryComponent} from "app/windows/main/menus/shortcuts/inventory/inventory.component";
 import {ShortcutsInterfaceComponent} from "app/windows/main/menus/shortcuts/interface/interface.component";
+import {ShortcutsModComponent} from "./windows/main/menus/shortcuts/mod/mod.component";
 import {ShortcutsSpellComponent} from "app/windows/main/menus/shortcuts/spell/spell.component";
 import {UpdateComponent} from "app/windows/update/update.component";
 import {AboutComponent} from "app/windows/main/menus/option/about/about.component";

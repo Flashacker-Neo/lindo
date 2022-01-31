@@ -51,7 +51,7 @@ export class DtMap extends Mod {
         this.iframe.id = "dtmap-iframe";
         this.iframe.src = "https://www.dofus-touch-map.com";
 
-        this.window.addContent(this.iframe);
+        this.window.addContent(this.iframe).hide();
     }
 
     private toggle() {
