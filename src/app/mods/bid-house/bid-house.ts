@@ -1,9 +1,11 @@
 import { WindowContentHelper } from "@helpers/windowHelper/windowContent.helper";
+import axios from "axios";
 import { Mod } from "../mod";
 
 export class BidHouse extends Mod {
 
     private optionsWindow: any;
+    private alreadyCheckItems: {[key: number]: number} = {};
 
     startMod(): void {
         // Set parent windows
@@ -41,26 +43,58 @@ export class BidHouse extends Mod {
         if (e?.data?.data?.type === 'ExchangeBidHouseListMessage') {
             this.once(this.wGame.dofus.connectionManager, 'ExchangeTypesItemsExchangerDescriptionForUserMessage', (i: any) => {
                 const itemId = e.data.data.data.id;
-                let item = {itemId, date: Date.now(), server: this.wGame.gui.serversData.connectedServerId, min: 0, max: 0, median: 0, prices: []};
+                const now = Date.now();
+
+                // Create item object
+                let item = {itemId, date: now, server: this.wGame.gui.serversData.connectedServerId, min: 0, max: 0, median: 0, prices: []};
     
+                // Unique offer
                 if (i.itemTypeDescriptions.length == 1) {
-                    item.prices = i.itemTypeDescriptions[0].prices;
+                    const prices = i.itemTypeDescriptions[0].prices;
+                    item.prices = prices;
+
+                    // Create object for each quantity with real price and unit price
+                    let items: any = {};
+                    if (prices[0] > 0) items['1'] = {   price: prices[0], unit: prices[0] };
+                    if (prices[1] > 0) items['10'] = {  price: prices[1], unit: (prices[1] / 10) };
+                    if (prices[2] > 0) items['100'] = { price: prices[2], unit: (prices[2] / 100) };
+
+                    // Set min, max & median based on calculated unit prices.
+                    const sort = Object.keys(items).sort((a,b) => items[a].unit - items[b].unit);
+                    item.min = items[sort[0]].price;
+                    item.max = items[sort[sort.length - 1]].price;
+                    item.median = Math.round(items[sort[1]].price / Number(sort[1]));
                 }
+                // Multi offers
                 else {
                     let items = i.itemTypeDescriptions.map(i => i.prices[0]).sort((a,b) => a - b);
                     item.min = items[0];
                     item.max = items[items.length - 1];
                     item.median = this.findMedian(items);
                 }
-                
+                    
                 this.updateData(item);
+
+                // Send data to server only if the item wasn't already sent 5 minutes before
+                if (!this.alreadyCheckItems[itemId] || this.alreadyCheckItems[itemId] < (now - 5*60*1000)) {
+                    this.alreadyCheckItems[itemId] = now; // Set new time
+
+                    // Send item prices to db
+                    axios.post(
+                        'http://localhost:5000/api/v2/hdv/itemsPrices',
+                        item,
+                        { headers: { Authorization: `Bearer DP55zH7g.m6uCv5C8IxQUQFpgSoRghkQiOK0AAcLNbZEqzfTj`} }
+                    ).catch(err => console.error(err));
+                }
             });
         }
     }
 
 
+    // Add custom HTML when items details is open
     private onOpen() {
-        if (this.optionsWindow.mode === "buy-bidHouse") {
+        if (this.optionsWindow.mode === "buy-bidHouse"
+            && this.optionsWindow.rootElement.getElementsByClassName('neo-bhp').length < 1) {
             const table: HTMLElement = this.optionsWindow.rootElement.getElementsByClassName('BidHouseBuyerBox')[0];
 
             const contentBox: HTMLDivElement = new WindowContentHelper(this.wGame).createContentBox('price-indicator', 'neo-bhp');
@@ -75,6 +109,7 @@ export class BidHouse extends Mod {
         }
     }
 
+    // Update content in HTML with item values
     private updateData(item) {
         const content: HTMLElement = this.optionsWindow.rootElement.getElementsByClassName('neo-bhp')[0];
         content.getElementsByClassName('price-min')[0].innerHTML = `${this.formatNumber(item.min)} K`;
