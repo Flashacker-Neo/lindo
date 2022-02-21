@@ -12,6 +12,7 @@ export class BidHouse extends Mod {
         this.optionsWindow = this.wGame.gui.windowsContainer.getChildren().find(c => c.id === "tradeItem");
         // Define gui listener
         this.optionsWindow.on("open", () => this.onOpen());
+        this.optionsWindow.on("close", () => this.onClose());
 
         const bidHousePriceCss = document.createElement('style');
         bidHousePriceCss.id = 'bidHousePriceCss';
@@ -63,7 +64,7 @@ export class BidHouse extends Mod {
                     const sort = Object.keys(items).sort((a,b) => items[a].unit - items[b].unit);
                     item.min = items[sort[0]].price;
                     item.max = items[sort[sort.length - 1]].price;
-                    item.median = Math.round(items[sort[1]].price / Number(sort[1]));
+                    item.median = (sort.length) > 1 ? Math.round(items[sort[1]]?.price / Number(sort[1])) : 0;
                 }
                 // Multi offers
                 else {
@@ -106,6 +107,13 @@ export class BidHouse extends Mod {
 
             contentBox.insertAdjacentHTML('afterbegin', content);
             table.insertAdjacentElement('afterend', contentBox);
+        }
+    }
+
+    private onClose() {
+        if (this.optionsWindow.mode === "buy-bidHouse") {
+            const neoBhp: HTMLElement = this.optionsWindow.rootElement.getElementsByClassName('neo-bhp')[0];
+            neoBhp?.remove();
         }
     }
 
