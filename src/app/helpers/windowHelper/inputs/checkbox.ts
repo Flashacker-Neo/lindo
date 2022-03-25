@@ -84,4 +84,12 @@ export class Checkbox {
     public getIfIsCheck(): boolean {
         return this.checkbox.classList.contains('on');
     }
+
+    /**
+     * Return the html element
+     * @returns HTMLDivElement
+     */
+     public getHtmlElement(): HTMLDivElement {
+        return this.checkbox;
+    }
 }
