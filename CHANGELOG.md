@@ -1,6 +1,15 @@
 ## ⚠ ATTENTION, VÉRIFIEZ QUE VOUS TÉLÉCHARGEZ LINDO DEPUIS LINDO-APP.COM
 ## ⚠ CERTAINS SITES MALVEILLANTS INSTALLERONT UN VIRUS SUR VOTRE ORDINATEUR
 
+## [2.7.2-Custom] - 2022-03-25
+
+### Ajouts
+- Theme alternatif, rajoute trois thèmes transparents
+- Intégration du site Dofus-Touch-Map.com en jeu via une nouvelle fenêtre
+- Récapitulatifs des ventes hors-lignes
+
+### Correctifs
+- Correction d'un bug dans l'auto-focus
 
 ## [2.7.2]
 

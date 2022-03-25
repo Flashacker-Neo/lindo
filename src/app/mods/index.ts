@@ -26,3 +26,5 @@ export { ZaapSearchFilter } from "./zaap-search-filter/zaap-search-filter";
 
 // Need to be at this end of this file, please do not move
 export { AddCss } from "./addCss/addCss";
+// Need to be the last export
+export { AlternativeTheme } from "./alternative-themes/alternativeTheme";
