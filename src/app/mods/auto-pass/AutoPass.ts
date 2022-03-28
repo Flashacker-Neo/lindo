@@ -38,7 +38,7 @@ export class AutoPass extends Mod {
 
     private insertComponent() {
         // Create HTML Element
-        const checkbox: Checkbox = Checkbox.createCheckbox(this.wGame, 'autoPass', {text: 'AutoPass', isCheck: this.isActivate});
+        const checkbox: Checkbox = Checkbox.create(this.wGame, 'autoPass', {text: 'AutoPass', isCheck: this.isActivate});
         this.container = this.wGame.document.createElement('div');
         this.container.classList.add('auto-pass-container');
 
