@@ -1,11 +1,10 @@
-export class List {
-    private wGame: any|Window;
+import { CustomDTElement } from "../customElement.abstract";
+
+export class List extends CustomDTElement<List> {
 
     private constructor(wGame: any|Window) {
-        this.wGame = wGame;
+        super(wGame);
     }
-
-    list: HTMLDivElement;
 
     /**
      * Return an HTMLDivElement with dofus touch list skin
@@ -13,14 +12,14 @@ export class List {
      * @param choices Array of choices in list
      * @param customClassName A custom className for add your css
      */
-    public static createList(wGame: any|Window, id: string, choices: Array<{id: string, text: string}>, customClassName?: string): List {
+    public static create(wGame: any|Window, id: string, choices: Array<{id: string, text: string}>, customClassName?: string): List {
         const instance: List = new List(wGame);
 
         // Create container
-        instance.list = wGame.document.createElement('div');
-        instance.list.id = id;
-        instance.list.className = 'menu';
-        if (customClassName) instance.list.classList.add(customClassName);
+        instance.htmlElement = wGame.document.createElement('div');
+        instance.htmlElement.id = id;
+        instance.htmlElement.className = 'menu';
+        if (customClassName) instance.htmlElement.classList.add(customClassName);
 
         const scrollableContent = wGame.document.createElement('div');
         scrollableContent.className = 'scrollableContent customScrollerContent';
@@ -37,7 +36,7 @@ export class List {
             scrollableContent.insertAdjacentElement('beforeend', item);
         })
 
-        instance.list.insertAdjacentElement('afterbegin', scrollableContent);
+        instance.htmlElement.insertAdjacentElement('afterbegin', scrollableContent);
 
         return instance;
     }
@@ -46,12 +45,13 @@ export class List {
      * Add event on item in list, return the item id and text
      * @param callBack The method to execute on list item click
      */
-    public addListEvent(callBack: any) {
-        const scrollableContent = this.list.children[0];
+    public addEvent(callBack: any) {
+        const scrollableContent = this.htmlElement.children[0];
 
-        let onClick = (element) => {
+        let onClick = (element: any) => {
             const selectedItem = scrollableContent.getElementsByClassName('selected')[0];
             if (selectedItem.classList.contains('selected')) selectedItem.classList.remove('selected');
+            element = element.target;
             element.classList.add('selected');
 
             callBack({id: element.dataset.id, text: element.textContent});
@@ -64,11 +64,8 @@ export class List {
         });
     }
 
-    /**
-     * Use to get the HTMLElement of the list
-     * @returns The HTMLDivElement of list
-     */
-    public getListHtmlElement(): HTMLDivElement {
-        return this.list;
+    public setAttribute(qualifiedName: string, value: string): List {
+        super.setAttribute(qualifiedName, value);
+        return this;
     }
 }

@@ -1,10 +1,9 @@
-export class Checkbox {
-    private wGame: any|Window;
+import { CustomDTElement } from "../customElement.abstract";
 
-    public checkbox: HTMLDivElement;
+export class Checkbox extends CustomDTElement<Checkbox> {
 
     private constructor(wGame: any|Window) {
-        this.wGame = wGame;
+        super(wGame);
     }
 
     /**
@@ -12,15 +11,15 @@ export class Checkbox {
      * @param id The div id
      * @param options The option of checkBox
      */
-    public static createCheckbox(wGame: any|Window, id: string, options: {text: string, isCheck?: boolean, customClass?: string}): Checkbox {
+    public static create(wGame: any|Window, id: string, options: {text: string, isCheck?: boolean, customClass?: string}): Checkbox {
         const instance: Checkbox = new Checkbox(wGame);
 
-        instance.checkbox = instance.wGame.document.createElement('div');
-        instance.checkbox.id = id;
-        instance.checkbox.className = 'CheckboxLabel';
-        if (options.isCheck) instance.checkbox.classList.add('on');
-        if (options.customClass) instance.checkbox.classList.add(options.customClass);
-        instance.checkbox.insertAdjacentText('afterbegin', options.text);
+        instance.htmlElement = instance.wGame.document.createElement('div');
+        instance.htmlElement.id = id;
+        instance.htmlElement.className = 'CheckboxLabel';
+        if (options.isCheck) instance.htmlElement.classList.add('on');
+        if (options.customClass) instance.htmlElement.classList.add(options.customClass);
+        instance.htmlElement.insertAdjacentText('afterbegin', options.text);
 
         return instance;
     }
@@ -32,16 +31,16 @@ export class Checkbox {
      */
     public addEvent(callBack: any): Checkbox {
         let onClick = () => {
-            if (!this.checkbox.classList.contains('disabled')) {
+            if (!this.htmlElement.classList.contains('disabled')) {
 
-                if (this.checkbox.classList.contains('on')) this.checkbox.classList.remove('on');
-                else this.checkbox.classList.add('on');
+                if (this.htmlElement.classList.contains('on')) this.htmlElement.classList.remove('on');
+                else this.htmlElement.classList.add('on');
 
-                callBack(this.checkbox.classList.contains('on'));
+                callBack(this.htmlElement.classList.contains('on'));
             }
         };
 
-        this.checkbox.addEventListener('click', onClick);
+        this.htmlElement.addEventListener('click', onClick);
 
         return this;
     }
@@ -50,7 +49,7 @@ export class Checkbox {
      * Disabled checkbox, block action on click
      */
     public disabled(): Checkbox {
-        if (!this.checkbox.classList.contains('disabled')) this.checkbox.classList.add('disabled');
+        if (!this.htmlElement.classList.contains('disabled')) this.htmlElement.classList.add('disabled');
         return this;
     }
 
@@ -58,7 +57,7 @@ export class Checkbox {
      * Enabled checkbox
      */
     public enabled(): Checkbox {
-        if (this.checkbox.classList.contains('disabled')) this.checkbox.classList.remove('disabled');
+        if (this.htmlElement.classList.contains('disabled')) this.htmlElement.classList.remove('disabled');
         return this;
     }
 
@@ -66,7 +65,7 @@ export class Checkbox {
      * Check the box
      */
     public check(): Checkbox {
-        if (!this.checkbox.classList.contains('on')) this.checkbox.classList.add('on');
+        if (!this.htmlElement.classList.contains('on')) this.htmlElement.classList.add('on');
         return this;
     }
 
@@ -74,7 +73,7 @@ export class Checkbox {
      * Uncheck the box
      */
     public uncheck(): Checkbox {
-        if (this.checkbox.classList.contains('on')) this.checkbox.classList.remove('on');
+        if (this.htmlElement.classList.contains('on')) this.htmlElement.classList.remove('on');
         return this;
     }
 
@@ -82,14 +81,11 @@ export class Checkbox {
      * Get if the checkbox is check
      */
     public getIfIsCheck(): boolean {
-        return this.checkbox.classList.contains('on');
+        return this.htmlElement.classList.contains('on');
     }
-
-    /**
-     * Return the html element
-     * @returns HTMLDivElement
-     */
-     public getHtmlElement(): HTMLDivElement {
-        return this.checkbox;
+    
+    public setAttribute(qualifiedName: string, value: string): Checkbox {
+        super.setAttribute(qualifiedName, value);
+        return this;
     }
 }

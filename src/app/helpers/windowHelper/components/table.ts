@@ -1,14 +1,14 @@
-export class Table {
-    private wGame: any|Window;
+import { CustomDTElement } from "../customElement.abstract";
 
-    private table: HTMLDivElement;
+export class Table extends CustomDTElement<Table> {
+
     private tableHeader: HTMLDivElement;
     private tableContent: HTMLDivElement;
 
     private columns: {name: string, style: {cssRule: string, value: string}[], caseStyle?: {cssRule: string, value: string}[]}[];
 
     private constructor(wGame: any|Window) {
-        this.wGame = wGame;
+        super(wGame);
     }
 
     /**
@@ -18,16 +18,16 @@ export class Table {
      * @param customClass A custom className for add your css
      * @returns An instance of this Table
      */
-    public static createTable(wGame: any|Window, id: string, columns: {name: string, style: {cssRule: string, value: string}[], caseStyle?: {cssRule: string, value: string}[]}[], customClass?: string): Table {
+    public static create(wGame: any|Window, id: string, columns: {name: string, style: {cssRule: string, value: string}[], caseStyle?: {cssRule: string, value: string}[]}[], customClass?: string): Table {
         const instance: Table = new Table(wGame);
 
         instance.columns = columns;
 
         // Define container
-        instance.table = wGame.document.createElement('div');
-        instance.table.id = id;
-        instance.table.className = 'TableV2';
-        if (customClass)  instance.table.classList.add(customClass);
+        instance.htmlElement = wGame.document.createElement('div');
+        instance.htmlElement.id = id;
+        instance.htmlElement.className = 'TableV2';
+        if (customClass)  instance.htmlElement.classList.add(customClass);
 
         instance.tableHeader = wGame.document.createElement('div');
         instance.tableHeader.id = id + '-theader';
@@ -55,8 +55,8 @@ export class Table {
 
         // insert container in table
         instance.tableHeader.insertAdjacentElement('beforeend', headerRow);
-        instance.table.insertAdjacentElement('beforeend', instance.tableHeader);
-        instance.table.insertAdjacentElement('beforeend', instance.tableContent);
+        instance.htmlElement.insertAdjacentElement('beforeend', instance.tableHeader);
+        instance.htmlElement.insertAdjacentElement('beforeend', instance.tableContent);
 
         return instance;
     }
@@ -71,14 +71,6 @@ export class Table {
         while (this.tableContent.firstChild) this.tableContent.removeChild(this.tableContent.firstChild);
 
         this.insertData(data);
-    }
-
-    /**
-     * Use to get the HTMLElement of the table
-     * @returns The HTMLDivElement of table
-     */
-    public get getHtmlElement(): HTMLDivElement {
-        return this.table;
     }
 
     /**
@@ -116,5 +108,10 @@ export class Table {
 
             this.tableContent.insertAdjacentElement('beforeend', rowDiv);
         });
+    }
+
+    public setAttribute(qualifiedName: string, value: string): Table {
+        super.setAttribute(qualifiedName, value);
+        return this;
     }
 }

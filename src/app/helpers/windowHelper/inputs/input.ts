@@ -1,13 +1,12 @@
+import { CustomDTElement } from "../customElement.abstract";
 import { Button, ButtonColor } from "./button";
 
-export class Input {
-    private wGame: any|Window;
+export class Input extends CustomDTElement<Input> {
 
-    public searchBox: HTMLDivElement;
     private searchBtn: Button;
 
     private constructor(wGame: any|Window) {
-        this.wGame = wGame;
+        super(wGame);
     }
 
     /**
@@ -21,10 +20,10 @@ export class Input {
             const instance: Input = new Input(wGame);
 
             // create global container
-            instance.searchBox = instance.wGame.document.createElement('div');
-            instance.searchBox.id = id;
-            instance.searchBox.className = 'searchBox';
-            if (options.containerClassName) instance.searchBox.classList.add(options.containerClassName);
+            instance.htmlElement = instance.wGame.document.createElement('div');
+            instance.htmlElement.id = id;
+            instance.htmlElement.className = 'htmlElement';
+            if (options.containerClassName) instance.htmlElement.classList.add(options.containerClassName);
 
             const inputFrame: HTMLDivElement = instance.wGame.document.createElement('div');
             inputFrame.className = 'inputFrame';
@@ -55,8 +54,8 @@ export class Input {
             cancelBtn.insertAdjacentElement('afterbegin', btnIcon);
             inputFrame.insertAdjacentElement('afterbegin', input);
             inputFrame.insertAdjacentElement('beforeend', cancelBtn);
-            instance.searchBox.insertAdjacentElement('afterbegin', inputFrame);
-            if (options.searchButton) instance.searchBox.insertAdjacentElement('beforeend', instance.searchBtn.getHtmlElement());
+            instance.htmlElement.insertAdjacentElement('afterbegin', inputFrame);
+            if (options.searchButton) instance.htmlElement.insertAdjacentElement('beforeend', instance.searchBtn.getHtmlElement());
 
             return instance;
     }
@@ -71,14 +70,14 @@ export class Input {
         ): Input {
             const instance: Input = new Input(wGame);
             
-            instance.searchBox = instance.wGame.document.createElement('div');
-            instance.searchBox.id = id;
-            instance.searchBox.className = 'chat';
-            if (options.containerClassName) instance.searchBox.classList.add(options.containerClassName);
-            instance.searchBox.style.display = 'flex';
-            instance.searchBox.style.position = 'initial';
-            instance.searchBox.style.width = 'calc(100% - 5px)';
-            instance.searchBox.style.height = 'auto'; // fix height from dt class
+            instance.htmlElement = instance.wGame.document.createElement('div');
+            instance.htmlElement.id = id;
+            instance.htmlElement.className = 'chat';
+            if (options.containerClassName) instance.htmlElement.classList.add(options.containerClassName);
+            instance.htmlElement.style.display = 'flex';
+            instance.htmlElement.style.position = 'initial';
+            instance.htmlElement.style.width = 'calc(100% - 5px)';
+            instance.htmlElement.style.height = 'auto'; // fix height from dt class
 
             // create input field
             const input: HTMLInputElement = instance.wGame.document.createElement('input');
@@ -95,8 +94,8 @@ export class Input {
             // create search button
             instance.searchBtn = Button.createIconButton(wGame, id + '-searchBtn', {icon: 'sendButton', customClassName: "greenButton"});
 
-            instance.searchBox.insertAdjacentElement('afterbegin', input);
-            if (options.sendButton) instance.searchBox.insertAdjacentElement('beforeend', instance.searchBtn.getHtmlElement());
+            instance.htmlElement.insertAdjacentElement('afterbegin', input);
+            if (options.sendButton) instance.htmlElement.insertAdjacentElement('beforeend', instance.searchBtn.getHtmlElement());
 
             return instance;
     }
@@ -112,10 +111,10 @@ export class Input {
         ): Input {
             const instance: Input = new Input(wGame);
 
-            instance.searchBox = instance.wGame.document.createElement('div');
-            instance.searchBox.id = id;
-            if (options.label && options.label.length > 0) instance.searchBox.insertAdjacentText('afterbegin', options.label);
-            if (options.containerClassName) instance.searchBox.classList.add(options.containerClassName);
+            instance.htmlElement = instance.wGame.document.createElement('div');
+            instance.htmlElement.id = id;
+            if (options.label && options.label.length > 0) instance.htmlElement.insertAdjacentText('afterbegin', options.label);
+            if (options.containerClassName) instance.htmlElement.classList.add(options.containerClassName);
 
             const input: HTMLInputElement = instance.wGame.document.createElement('input');
             input.className = 'NumberInputBox customNumber';
@@ -126,7 +125,7 @@ export class Input {
             input.step = options.step ? options.step : '0.1';
             input.type = 'number';
 
-            instance.searchBox.insertAdjacentElement('beforeend', input);
+            instance.htmlElement.insertAdjacentElement('beforeend', input);
 
             return instance;
     }
@@ -135,12 +134,10 @@ export class Input {
      * Add event on input and call the callBack
      * @param callBack The method to execute on keyUp or click on search
      */
-    public addEvent(callBack: any): Input {
-        if (this.searchBox.getElementsByClassName('NumberInputBox').length > 0) this.addInputNumberEvent(callBack);
-        else if (this.searchBox.getElementsByClassName('inputChat').length > 0) this.addInputChatEvent(callBack);
+    public addEvent(callBack: any) {
+        if (this.htmlElement.getElementsByClassName('NumberInputBox').length > 0) this.addInputNumberEvent(callBack);
+        else if (this.htmlElement.getElementsByClassName('inputChat').length > 0) this.addInputChatEvent(callBack);
         else this.addInputTextEvent(callBack);
-
-        return this;
     }
 
     /**
@@ -148,7 +145,7 @@ export class Input {
      * @param callBack The method to execute on keyUp or click on search
      */
     private addInputNumberEvent(callBack: any) {
-        const input: any = this.searchBox.children[0];
+        const input: any = this.htmlElement.children[0];
         let onKeyUp = () => {
             if (input.value) callBack(parseFloat(input.value));
         };
@@ -160,8 +157,8 @@ export class Input {
      * @param callBack The method to execute on keyUp or click on search
      */
     private addInputTextEvent(callBack: any) {
-        const input: any = this.searchBox.children[0].children[0];
-        const cancelBtn: any = this.searchBox.children[0].children[1];
+        const input: any = this.htmlElement.children[0].children[0];
+        const cancelBtn: any = this.htmlElement.children[0].children[1];
         const btnIcon = cancelBtn.children[0];
 
         let onKeyUp = () => {
@@ -187,7 +184,7 @@ export class Input {
      * @param callBack The method to execute on keyUp or click on search
      */
     private addInputChatEvent(callBack: any) {
-        const input: any = this.searchBox.getElementsByClassName('inputChat')[0];
+        const input: any = this.htmlElement.getElementsByClassName('inputChat')[0];
 
         let onKeyUp = (event) => {
             // fire callback if 'enter' key up
@@ -207,24 +204,21 @@ export class Input {
 
     /**
      * Get the value of the input
-     * @param searchBox The input you wan't to get value
+     * @param htmlElement The input you wan't to get value
      */
     public getInputValue() {
         let input: any;
 
-        if (this.searchBox.getElementsByClassName('NumberInputBox').length > 0) input = this.searchBox.getElementsByClassName('NumberInputBox')[0];
-        else if (this.searchBox.getElementsByClassName('inputBox').length > 0) input = this.searchBox.getElementsByClassName('inputBox')[0];
-        else if (this.searchBox.getElementsByClassName('inputChat').length > 0) input = this.searchBox.getElementsByClassName('inputChat')[0];
+        if (this.htmlElement.getElementsByClassName('NumberInputBox').length > 0) input = this.htmlElement.getElementsByClassName('NumberInputBox')[0];
+        else if (this.htmlElement.getElementsByClassName('inputBox').length > 0) input = this.htmlElement.getElementsByClassName('inputBox')[0];
+        else if (this.htmlElement.getElementsByClassName('inputChat').length > 0) input = this.htmlElement.getElementsByClassName('inputChat')[0];
 
         return input.value;
     }
 
-    /**
-     * Return the HTMLDivElement
-     * @returns HTMLDivElement
-     */
-    public getHtmlElement(): HTMLDivElement {
-        return this.searchBox;
+    public setAttribute(qualifiedName: string, value: string): Input {
+        super.setAttribute(qualifiedName, value);
+        return this;
     }
 }
 

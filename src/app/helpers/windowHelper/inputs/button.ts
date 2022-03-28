@@ -1,10 +1,9 @@
-export class Button {
-    private wGame: any|Window;
+import { CustomDTElement } from "../customElement.abstract";
 
-    public button: HTMLDivElement;
+export class Button extends CustomDTElement<Button> {
 
     private constructor(wGame: any|Window) {
-        this.wGame = wGame;
+        super(wGame);
     }
 
     /**
@@ -16,11 +15,11 @@ export class Button {
     public static createTextButton(wGame: any|Window, id: string, options: {text: string, color: ButtonColor, customClassName?: string}): Button {
         const instance: Button = new Button(wGame);
 
-        instance.button = instance.wGame.document.createElement('div');
-        instance.button.id = id;
-        instance.button.className = 'Button scaleOnPress ' + options.color;
-        if (options.customClassName) instance.button.classList.add(options.customClassName);
-        instance.button.insertAdjacentText('afterbegin', options.text);
+        instance.htmlElement = instance.wGame.document.createElement('div');
+        instance.htmlElement.id = id;
+        instance.htmlElement.className = 'Button scaleOnPress ' + options.color;
+        if (options.customClassName) instance.htmlElement.classList.add(options.customClassName);
+        instance.htmlElement.insertAdjacentText('afterbegin', options.text);
 
         return instance;
     }
@@ -34,15 +33,15 @@ export class Button {
      public static createIconButton(wGame: any|Window, id: string, options: {icon: string, customClassName?: string}): Button {
         const instance: Button = new Button(wGame);
 
-        instance.button = instance.wGame.document.createElement('div');
-        instance.button.id = id;
-        instance.button.className = `Button scaleOnPress ${options.icon}`;
-        if (options.customClassName) instance.button.classList.add(options.customClassName);
+        instance.htmlElement = instance.wGame.document.createElement('div');
+        instance.htmlElement.id = id;
+        instance.htmlElement.className = `Button scaleOnPress ${options.icon}`;
+        if (options.customClassName) instance.htmlElement.classList.add(options.customClassName);
 
         const btnIcon: HTMLDivElement = instance.wGame.document.createElement('div');
         btnIcon.className = 'btnIcon';
 
-        instance.button.insertAdjacentElement('afterbegin', btnIcon);
+        instance.htmlElement.insertAdjacentElement('afterbegin', btnIcon);
 
         return instance;
     }
@@ -54,35 +53,28 @@ export class Button {
      */
     public addEvent(callBack: any): Button {
         let onPress = () => {
-            if (!this.button.classList.contains('disabled')) this.button.classList.add('pressed');
+            if (!this.htmlElement.classList.contains('disabled')) this.htmlElement.classList.add('pressed');
         };
         let onRelease = () => {
-            if (this.button.classList.contains('pressed')) this.button.classList.remove('pressed'); 
+            if (this.htmlElement.classList.contains('pressed')) this.htmlElement.classList.remove('pressed'); 
         };
         let onClick = () => {
-            if (!this.button.classList.contains('disabled')) callBack();
+            if (!this.htmlElement.classList.contains('disabled')) callBack();
         };
 
-        this.button.addEventListener('touchstart', onPress);
-        this.button.addEventListener('touchend', onRelease);
-        this.button.addEventListener('click', onClick);
+        this.htmlElement.addEventListener('touchstart', onPress);
+        this.htmlElement.addEventListener('touchend', onRelease);
+        this.htmlElement.addEventListener('click', onClick);
 
         return this;
     }
 
-    /**
-     * Return the html element
-     * @returns HTMLDivElement
-     */
-    public getHtmlElement(): HTMLDivElement {
-        return this.button;
-    }
 
     /**
      * Disabled button, block action on click
      */
     public disabled(): Button {
-        if (!this.button.classList.contains('disabled')) this.button.classList.add('disabled');
+        if (!this.htmlElement.classList.contains('disabled')) this.htmlElement.classList.add('disabled');
         return this;
     }
 
@@ -90,7 +82,7 @@ export class Button {
      * Enabled button
      */
     public enabled(): Button {
-        if (this.button.classList.contains('disabled')) this.button.classList.remove('disabled');
+        if (this.htmlElement.classList.contains('disabled')) this.htmlElement.classList.remove('disabled');
         return this;
     }
 
@@ -100,8 +92,13 @@ export class Button {
      */
     public changeButtonColor(buttonColor: ButtonColor): Button {
         for (let color in ButtonColor) {
-            if (this.button.classList.contains(ButtonColor[color])) this.button.classList.replace(ButtonColor[color], buttonColor);
+            if (this.htmlElement.classList.contains(ButtonColor[color])) this.htmlElement.classList.replace(ButtonColor[color], buttonColor);
         }
+        return this;
+    }
+
+    public setAttribute(qualifiedName: string, value: string): Button {
+        super.setAttribute(qualifiedName, value);
         return this;
     }
 }

@@ -1,12 +1,14 @@
-export class Select {
-    private wGame: any|Window;
-    private dropDown;
-    private elements: Array<{htmlElmnt: HTMLDivElement, callBack: any}> = [];
+import { CustomDTElement } from "../customElement.abstract"
 
-    public selectBox: HTMLDivElement;
+export class Select extends CustomDTElement<Select> {
+    private dropDown;
+    private entryContainer: HTMLDivElement;
+    //private elements: Array<{htmlElmnt: HTMLDivElement, callBack: any}> = [];
+
+    // TODO Is now an object so we can save const in the object, like entryContainer, etc...
 
     private constructor(wGame: any|Window) {
-        this.wGame = wGame;
+        super(wGame);
         this.dropDown = this.wGame.document.getElementsByClassName('dropDown')[0];
     }
 
@@ -16,15 +18,15 @@ export class Select {
      * @param choices Array of choices in select list
      * @param customClassName A custom className for add your css
      */
-    public static createSelect(wGame: any|Window, id: string, choices: Array<{id: string, text: string, textInSelect?: string, ticked?: boolean}>, customClassName?: string
+    public static create(wGame: any|Window, id: string, choices: Array<{id: string, text: string, textInSelect?: string, ticked?: boolean}>, customClassName?: string
         ): Select {
             const instance: Select = new Select(wGame);
 
             // Create container of select
-            instance.selectBox = instance.wGame.document.createElement('div');
-            instance.selectBox.id = id;
-            instance.selectBox.className = 'Selector';
-            if (customClassName) instance.selectBox.classList.add(customClassName);
+            instance.htmlElement = instance.wGame.document.createElement('div');
+            instance.htmlElement.id = id;
+            instance.htmlElement.className = 'Selector';
+            if (customClassName) instance.htmlElement.classList.add(customClassName);
 
             // Child of container for display select element
             const selectorContent: HTMLDivElement = instance.wGame.document.createElement('div');
@@ -37,8 +39,8 @@ export class Select {
             const openBtn: HTMLDivElement = instance.wGame.document.createElement('div');
             openBtn.className = 'buttonOpen';
 
-            instance.selectBox.insertAdjacentElement('afterbegin', openBtn);
-            instance.selectBox.insertAdjacentElement('afterbegin', selectorContent);
+            instance.htmlElement.insertAdjacentElement('afterbegin', openBtn);
+            instance.htmlElement.insertAdjacentElement('afterbegin', selectorContent);
 
             // Create EntryList for choices
             instance.createEntryList(id, choices);
@@ -53,10 +55,10 @@ export class Select {
      */
     private createEntryList(id: string, choices?: Array<{id: string, text: string, textInSelect?: string, ticked?: boolean}>) {
         // Container for all element
-        const entryContainer: HTMLDivElement = this.wGame.document.createElement('div');
-        entryContainer.className = 'entryContainer';
-        entryContainer.id = id + '-entryContainer';
-        entryContainer.style.display = 'none';
+        this.entryContainer = this.wGame.document.createElement('div');
+        this.entryContainer.className = 'entryContainer';
+        this.entryContainer.id = id + '-entryContainer';
+        this.entryContainer.style.display = 'none';
 
         const entryList: HTMLDivElement = this.wGame.document.createElement('div');
         entryList.className = 'entryList Scroller';
@@ -77,8 +79,8 @@ export class Select {
         });
 
         entryList.insertAdjacentElement('afterbegin', scrollerContent);
-        entryContainer.insertAdjacentElement('afterbegin', entryList);
-        this.dropDown.insertAdjacentElement('beforeend', entryContainer);
+        this.entryContainer.insertAdjacentElement('afterbegin', entryList);
+        this.dropDown.insertAdjacentElement('beforeend', this.entryContainer);
     }
 
     /**
@@ -86,8 +88,7 @@ export class Select {
      * @param callBack The method to execute on select choice
      */
     public addEvent(callBack: any) {
-        const selectorContent = this.selectBox.getElementsByClassName('selectorContent')[0];
-        const entryContainer = this.wGame.document.getElementById(this.selectBox.id + '-entryContainer');
+        const selectorContent = this.htmlElement.getElementsByClassName('selectorContent')[0];
         const dtEntryContainer = this.dropDown.getElementsByClassName('entryContainer')[0];
 
         // Event for style of select
@@ -99,8 +100,8 @@ export class Select {
 
         // Event for display choice of select
         let onClick = () => {
-            const scrollerContent = entryContainer.getElementsByClassName('customScrollerContent')[0];
-            const selectBounding = this.selectBox.getBoundingClientRect();
+            const scrollerContent: any = this.entryContainer.getElementsByClassName('customScrollerContent')[0];
+            const selectBounding = this.htmlElement.getBoundingClientRect();
             const clientHeight = this.wGame.document.body.clientHeight;
 
             // Set manually visibility of DtDropDown & remove visibility of DtEntryContainer
@@ -109,22 +110,22 @@ export class Select {
             dtEntryContainer.style.display = 'none';
 
             // Display custom select
-            entryContainer.style.display = '';
-            entryContainer.style.left = selectBounding.left + 'px';
-            entryContainer.style.width = selectBounding.width - 34 + 'px';
+            this.entryContainer.style.display = '';
+            this.entryContainer.style.left = selectBounding.left + 'px';
+            this.entryContainer.style.width = selectBounding.width - 34 + 'px';
             // Reset position
-            entryContainer.style.bottom = '';
-            entryContainer.style.top = '';
+            this.entryContainer.style.bottom = '';
+            this.entryContainer.style.top = '';
 
             let scrollerMaxHeight = clientHeight - selectBounding.bottom - 17;
-            let entryContainerHeight = entryContainer.getBoundingClientRect().height;
+            let entryContainerHeight = this.entryContainer.getBoundingClientRect().height;
 
             if (entryContainerHeight < scrollerMaxHeight || scrollerMaxHeight > clientHeight*0.4) {
                 // Display entry container on bottom of select
-                entryContainer.style.top = selectBounding.bottom + 1 + 'px';
+                this.entryContainer.style.top = selectBounding.bottom + 1 + 'px';
             } else {
                 // Display entry container on top of select
-                entryContainer.style.bottom = clientHeight - selectBounding.top + 1 + 'px';
+                this.entryContainer.style.bottom = clientHeight - selectBounding.top + 1 + 'px';
                 scrollerMaxHeight = clientHeight - (clientHeight - selectBounding.top + 17);
             }
             // Define max height of scroller
@@ -136,7 +137,7 @@ export class Select {
         selectorContent.addEventListener('touchend', onRelease);
         selectorContent.addEventListener('click', onClick);
 
-        this.addEntryListEvent(entryContainer, selectorContent, callBack);
+        this.addEntryListEvent(this.entryContainer, selectorContent, callBack);
     }
 
     /**
@@ -187,25 +188,21 @@ export class Select {
         dropDownOverlay.addEventListener('click', hideDropDown);
     }
 
-    /**
-     * Use this for remove all the select element (DropDown and input)
-     * @param element The select element
-     */
-    public remove(element) {
-        const entryContainer = this.wGame.document.getElementById(element.id + '-entryContainer');
-        try {
-            entryContainer.remove();
-            element.remove();
-        } catch (ex) {
-            console.error(ex);
-        }
+
+    public setAttribute(qualifiedName: string, value: string): Select {
+        super.setAttribute(qualifiedName, value);
+        return this;
     }
 
     /**
-     * Get the HTMLDivElement
-     * @returns HTMLDivElement
+     * Use this for remove all the select element (DropDown and input)
      */
-    public getHtmlElement(): HTMLDivElement {
-        return this.selectBox;
+    public remove() {
+        try {
+            this.entryContainer.remove();
+            super.remove();
+        } catch (ex) {
+            console.error(ex);
+        }
     }
 }
