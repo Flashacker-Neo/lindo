@@ -317,7 +317,8 @@
           "show-resources" : "Affichage des ressources",
           "health-bar": "Afficher la barres de vie",
           "monster-tooltip": "Affiche infos des groupes de monstres",
-          "dtmap": "Carte des ressources"
+          "dtmap": "Carte des ressources",
+          "auto-harvest": "Récolte automatique"
         }
       },
       "notifications": {

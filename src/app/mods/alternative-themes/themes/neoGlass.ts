@@ -450,7 +450,8 @@ const neoGlass = `
         .log.Scroller,
         .PerceptorBoostPanel .leftPanel .perceptorCharacteristicsTable:before,
         .window.characUpdateWindow .containerBlock:before,
-        .window.PartyInviteDetailsWindow .container:before {
+        .window.PartyInviteDetailsWindow .container:before,
+        .customContent:before {
             border-image: none;
             border: 1px solid %primary_a20%;
             border-radius: 7px;
@@ -849,7 +850,8 @@ const neoGlass = `
         .window .BestiaryWindow .col1 .SingleSelectionList .listItem.selected > .sublist > .label:nth-child(2n+1),
         .window .BestiaryWindow .col1 .SingleSelectionList .listItem:nth-child(2n+1) > .label,
         .window.FightEndWindow .TableV2 .row.title,
-        .compositionTab .unscrollableContentBlock .compositionContent .col1 .SingleSelectionList .listItem.selected>.sublist>.label:nth-child(odd) {
+        .compositionTab .unscrollableContentBlock .compositionContent .col1 .SingleSelectionList .listItem.selected>.sublist>.label:nth-child(odd),
+        .menu .listItem.odd {
             background-color : %primary_a30%;
         }
 
@@ -867,7 +869,8 @@ const neoGlass = `
         .window .BestiaryWindow .sublist .label.selected,
         .HelpWindow .helpBody .col1 .sublist .label.selected,
         .compositionTab .unscrollableContentBlock .compositionContent .col1 .sublist .label.selected,
-        .compositionTab .unscrollableContentBlock .compositionContent .col1 .SingleSelectionList .listItem.selected>.label {
+        .compositionTab .unscrollableContentBlock .compositionContent .col1 .SingleSelectionList .listItem.selected>.label,
+        .menu .listItem.selected {
           position: relative;
           border-image: none !important;
           webkit-border-image: none !important;
@@ -886,7 +889,8 @@ const neoGlass = `
         .window.OptionsWindow .wrapper .menuCol .menu .listItem.selected::before,
         .HelpWindow .helpBody .col1 .sublist .label.selected::before,
         .compositionTab .unscrollableContentBlock .compositionContent .col1 .sublist .label.selected:before,
-        .compositionTab .unscrollableContentBlock .compositionContent .col1 .SingleSelectionList .listItem.selected>.label:before {
+        .compositionTab .unscrollableContentBlock .compositionContent .col1 .SingleSelectionList .listItem.selected>.label:before,
+        .menu .listItem.selected::before {
           content: " ";
           z-index: -1;
           position: absolute;

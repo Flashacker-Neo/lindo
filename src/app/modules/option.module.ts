@@ -718,6 +718,7 @@ export namespace Option {
             private _monster_tooltip_shortcut: string;
             private _verticaltimeline: boolean;
             private _dtmap_shortcut: string;
+            private _auto_harvest_shortcut: string;
 
             get party_info_pp():boolean{
                 return this._party_info_pp;
@@ -890,6 +891,14 @@ export namespace Option {
                 this._challpercent = challpercent;
             }
 
+            get auto_harvest_shortcut(): string {
+                return this._auto_harvest_shortcut;
+            }
+
+            set auto_harvest_shortcut(auto_harvest_shortcut: string) {
+                this.settingsProvider.write('option.vip.general.auto_harvest_shortcut', auto_harvest_shortcut);
+                this._auto_harvest_shortcut = auto_harvest_shortcut;
+            }
 
             constructor(private settingsProvider: SettingsProvider) {
                 this.disable_inactivity = this.settingsProvider.read('option.vip.general.disable_inactivity');
@@ -912,6 +921,7 @@ export namespace Option {
                 this.verticaltimeline = this.settingsProvider.read('option.vip.general.verticaltimeline');
                 this._dtmap_shortcut = this.settingsProvider.read('option.vip.general.dtmap_shortcut');
                 this.challpercent = this.settingsProvider.read('option.vip.general.challpercent');
+                this._auto_harvest_shortcut = this.settingsProvider.read('option.vip.general.auto_harvest_shortcut');
             }
         }
 

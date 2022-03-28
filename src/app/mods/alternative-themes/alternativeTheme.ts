@@ -51,7 +51,7 @@ export class AlternativeTheme extends Mod {
         headTitle.className = "header";
 
         // Create select
-        const select: Select = Select.createSelect(this.wGame, 'theme-selector', this.themeList);
+        const select: Select = Select.create(this.wGame, 'theme-selector', this.themeList);
         select.getHtmlElement().style.marginBottom = "15px";
 
         // Insert in parent

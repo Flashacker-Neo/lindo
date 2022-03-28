@@ -3,6 +3,7 @@ import { from } from "rxjs";
 export { General } from "../mods/general/general";
 
 export { AutoGroup } from "./auto-group/auto-group";
+export { AutoHarvest } from "./auto-harvest/autoHarvest";
 export { AutoPass } from "./auto-pass/AutoPass";
 export { ChallPercent } from "./chall-percent/chall-percent";
 export { DamageEstimator } from "../mods/damage-estimator/damage-estimator";
