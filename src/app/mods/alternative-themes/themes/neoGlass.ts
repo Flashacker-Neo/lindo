@@ -62,9 +62,6 @@ const themeVariableWhite = [
 ];
 
 const neoGlass = `
-        .windowsContainer {
-          background: grey;
-        }
         /*******************************************************************
         *   Home Screen                                                    *
         *******************************************************************/
@@ -2131,5 +2128,3 @@ const neoGlass = `
           bottom: 3px;
         }
 `;
-
-// filter: saturate(0.1) brightness(1.5);
