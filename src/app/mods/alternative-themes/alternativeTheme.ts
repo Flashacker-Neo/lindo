@@ -14,7 +14,8 @@ export class AlternativeTheme extends Mod {
         this.optionsWindow = this.wGame.gui.windowsContainer.getChildren().find(c => c.id === "options");
 
         // Define gui listener
-        this.optionsWindow.on("open", () => this.onOpen());
+        //this.optionsWindow.on("open", () => this.onOpen());
+        this.on(this.optionsWindow, "open", () => this.onOpen());
 
         // Set Theme list
         this.themeList = [
@@ -85,5 +86,9 @@ export class AlternativeTheme extends Mod {
         if (oldTheme?.ticked) oldTheme.ticked = false;
         const newTheme = this.themeList.find(t => t.id == themeId);
         newTheme['ticked'] = true;
+    }
+
+    public reset(): void {
+        super.reset();
     }
 }

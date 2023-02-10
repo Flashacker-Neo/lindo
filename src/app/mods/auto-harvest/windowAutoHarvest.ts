@@ -324,8 +324,8 @@ export class WindowAutoHarvest {
     }
 
     public reset() {
-        this.select.remove();
-        this.window.destroy();
+        if (this.select) this.select.remove();
+        if (this.window) this.window.destroy();
         this.wGame.document.getElementById('autoHarvestCss').remove();
         this.wGame.dofus.connectionManager.removeListener('JobLevelUpMessage', this.onJobLevelUp);
         WindowAutoHarvest.instance = null;
