@@ -363,7 +363,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
         for (const i in this.assetMapDifferences) {
             if (this.assetMapDifferences[i] == -1) {
 
-                const filePath = this.localGameFolder + this.remoteAssetMap.files[i].filename;
+                const filePath = this.localGameFolder + this.remoteAssetMap.files[i]?.filename;
                 const directoryPath = path.dirname(filePath);
 
                 if (fs.existsSync(filePath)) {
